@@ -1,1 +1,23 @@
-console.log("hi i am started")
+import express from "express";
+import cors from "cors";
+import shopRouter from "./routes/shop.js"
+import env from "dotenv";
+import { errorHandler } from "./utils/ErrorHandler.js";
+env.configDotenv({ path: "./env" });
+
+// import statements 
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+app.use("/api/shop/", shopRouter);
+
+app.use(errorHandler);
+
+app.listen(process.env.PORT, () => {
+    try {
+        console.log("server running on port", process.env.PORT);
+    } catch (error) {
+        console.log(error);
+    }
+});

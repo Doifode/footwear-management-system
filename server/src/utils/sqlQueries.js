@@ -1,0 +1,1 @@
+export const getAllShopsQuery = "select * from shops";
