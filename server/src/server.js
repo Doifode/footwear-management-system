@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import shopRouter from "./routes/shop.js"
 import userRouter from "./routes/user.js"
+import authRouter from "./routes/auth.js"
 import env from "dotenv";
 import { errorHandler } from "./utils/ErrorHandler.js";
 env.configDotenv({ path: "./env" });
@@ -13,6 +14,7 @@ app.use(express.json());
 
 app.use("/api/shop/", shopRouter);
 app.use("/api/user/", userRouter);
+app.use("/api/auth/", authRouter);
 
 app.use(errorHandler);
 

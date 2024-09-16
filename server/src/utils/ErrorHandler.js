@@ -1,9 +1,9 @@
 // errorHandler.js
-export const errorHandler = (err, req, res, next) => {
+export const errorHandler = (err, _req, res, _next) => {
     console.error(err.stack);
 
     res.status(err.statusCode || 200).json({
         status: false,
-        message: err.message || 'Internal Server Error',
+        message: err.sqlMessage || 'Internal Server Error',
     });
 };

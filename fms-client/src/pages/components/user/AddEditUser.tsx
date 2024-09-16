@@ -10,7 +10,6 @@ import apiClient from '../../../httpConfig/apiInClient';
 import { getShopByIdRoute, registerUpdateUserRoute } from '../../../httpConfig/ApiRoutes';
 import FMSFormCard from '../../common/FMSFormCard';
 
-// Modify the validation schema
 const validationSchema = Yup.object({
     firstName: Yup.string().required('First Name is required'),
     lastName: Yup.string().required('Last Name is required'),
@@ -27,7 +26,8 @@ const AddEditUser: React.FC = () => {
 
     const handleRegisterUser = async (values: IRegisterUser) => {
         try {
-            const data = { ...values, shopId: state.shopId, createdBy: 1 }; // Set createdBy to 1
+            const activateUrl = `${window.location.origin}/auth/activate-user`
+            const data = { ...values, shopId: state.shopId, createdBy: 1, activateUrl }; // Set createdBy to 1
             const registerUserResponse = await apiClient.post<{ data: any, message: string, success: boolean }>(registerUpdateUserRoute, data);
             if (registerUserResponse.data.success) {
                 toast.success(registerUserResponse.data.message);
@@ -131,7 +131,7 @@ const AddEditUser: React.FC = () => {
                                 fullWidth
                                 label="First Name"
                                 name="firstName"
-                                value={values.firstName}
+                                value={values.firstName.trim()}
                                 onChange={handleSpace}
                                 onBlur={handleBlur}
                                 error={touched.firstName && Boolean(errors.firstName)}
@@ -145,7 +145,7 @@ const AddEditUser: React.FC = () => {
                                 fullWidth
                                 label="Last Name"
                                 name="lastName"
-                                value={values.lastName}
+                                value={values.lastName.trim()}
                                 onChange={handleSpace}
                                 onBlur={handleBlur}
                                 error={touched.lastName && Boolean(errors.lastName)}
@@ -159,7 +159,7 @@ const AddEditUser: React.FC = () => {
                                 fullWidth
                                 label="User Name"
                                 name="userName"
-                                value={values.userName}
+                                value={values.userName.trim()}
                                 onChange={handleSpace}
                                 onBlur={handleBlur}
                                 error={touched.userName && Boolean(errors.userName)}
@@ -173,7 +173,7 @@ const AddEditUser: React.FC = () => {
                                 fullWidth
                                 label="Mobile Number"
                                 name="mobileNo"
-                                value={values.mobileNo}
+                                value={values.mobileNo.trim()}
                                 onChange={handleSpace}
                                 onBlur={handleBlur}
                                 error={touched.mobileNo && Boolean(errors.mobileNo)}
@@ -187,7 +187,7 @@ const AddEditUser: React.FC = () => {
                                 fullWidth
                                 label="Email"
                                 name="email"
-                                value={values.email}
+                                value={values.email.trim()}
                                 onChange={handleSpace}
                                 onBlur={handleBlur}
                                 error={touched.email && Boolean(errors.email)}
