@@ -35,3 +35,16 @@ export const getUsersByShopId = async (req, res, next) => {
     }
 };
 
+export const getUserById = async (req, res, next) => {
+         try {
+            const shopId = req.params.shopId;
+            const getUsersByShopIdQuery = `CALL GET_USERS_BY_SHOP_ID(${shopId})`
+            DB.query(getUsersByShopIdQuery, (error, result) => {
+                if (error) return next(error);
+                return ResponseHandler.success(res, "", 200, result[0])
+            });
+    
+        } catch (error) {
+    
+        }
+ }

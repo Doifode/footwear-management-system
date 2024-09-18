@@ -55,7 +55,7 @@ const AddEditShop: React.FC = () => {
             }
         } catch (error) {
             toast.error("Something went wrong.")
-        } 
+        }
     };
 
     const formik = useFormik<IRegisterShop>({
@@ -68,8 +68,8 @@ const AddEditShop: React.FC = () => {
             landMark: '',
             city: '',
             village: "",
-            shopId: 0
-        },
+            shopId: 0,
+         },
         enableReinitialize: true,
         validationSchema,
         onSubmit: (values: IRegisterShop) => {

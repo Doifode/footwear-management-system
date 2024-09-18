@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
 -- Host: localhost    Database: fms
 -- ------------------------------------------------------
--- Server version	8.0.36
+-- Server version	8.0.39
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,6 +14,112 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `roles`
+--
+
+DROP TABLE IF EXISTS `roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `roles` (
+  `roleId` int NOT NULL AUTO_INCREMENT,
+  `roleName` varchar(45) NOT NULL,
+  PRIMARY KEY (`roleId`),
+  UNIQUE KEY `roleId_UNIQUE` (`roleId`),
+  UNIQUE KEY `roleName_UNIQUE` (`roleName`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `roles`
+--
+
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` VALUES (2,'Admin'),(3,'Sells Man'),(1,'Super Admin');
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `shops`
+--
+
+DROP TABLE IF EXISTS `shops`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `shops` (
+  `shopName` varchar(25) NOT NULL,
+  `shopId` int NOT NULL AUTO_INCREMENT,
+  `userName` varchar(25) NOT NULL,
+  `state` varchar(100) NOT NULL,
+  `district` varchar(100) NOT NULL,
+  `tahsil` varchar(100) NOT NULL,
+  `city` varchar(100) NOT NULL,
+  `landMark` varchar(250) NOT NULL,
+  `isActive` tinyint NOT NULL DEFAULT '0',
+  `isDeleted` tinyint NOT NULL DEFAULT '0',
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedBy` int NOT NULL DEFAULT '0',
+  `createdBy` int NOT NULL DEFAULT '0',
+  `village` varchar(45) NOT NULL,
+  PRIMARY KEY (`shopId`),
+  UNIQUE KEY `userName_UNIQUE` (`userName`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `shops`
+--
+
+LOCK TABLES `shops` WRITE;
+/*!40000 ALTER TABLE `shops` DISABLE KEYS */;
+INSERT INTO `shops` VALUES ('vinod footweare',10,'vinodFootweare','Maharashtra','Kolhapur','Hatkanagle','Wathar','Near st stand',1,0,'2024-09-10 10:18:48','2024-09-18 10:02:36',0,0,'Ghunki'),('Maruti Foot wear',11,'MarutiFootWear','Maharashtra','Kolhapur','Hatkanangle','Wathar','Near St Stand Ghunki.',1,0,'2024-09-18 11:28:25','2024-09-18 11:28:25',0,0,'Ghunki');
+/*!40000 ALTER TABLE `shops` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user` (
+  `userId` int NOT NULL AUTO_INCREMENT,
+  `firstName` varchar(100) NOT NULL,
+  `lastName` varchar(100) NOT NULL,
+  `shopId` int NOT NULL,
+  `mobileNo` bigint NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `userName` varchar(45) NOT NULL,
+  `createdBy` int NOT NULL DEFAULT '0',
+  `updatedBy` int NOT NULL DEFAULT '0',
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `roleId` int DEFAULT '2',
+  `isActive` tinyint NOT NULL DEFAULT '0',
+  `password` varchar(255) DEFAULT NULL,
+  `activationToken` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`userId`),
+  UNIQUE KEY `activationToken_UNIQUE` (`activationToken`),
+  KEY `shopid_idx` (`shopId`),
+  KEY `roleId_idx` (`roleId`),
+  CONSTRAINT `roleId` FOREIGN KEY (`roleId`) REFERENCES `roles` (`roleId`) ON DELETE SET NULL ON UPDATE SET NULL,
+  CONSTRAINT `shopid` FOREIGN KEY (`shopId`) REFERENCES `shops` (`shopId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (28,'yash','doifode',10,8080494027,'yash@gmail.com','yash_doifode',1,1,'2024-09-12 17:24:36','2024-09-12 17:24:36',2,1,'$2a$10$29nMdosmqK6wB6qzsWrzTOPOlAPY9V3ieu.dL6cbyGGoDrOTJVUiy',NULL),(29,'Om','Doifode ',10,8745125269,'om@gmail.com','Om_Doifode',1,1,'2024-09-17 20:20:18','2024-09-17 20:20:18',2,0,NULL,'282d68ca-7504-11ef-8993-18dbf240cf51');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping routines for database 'fms'
@@ -202,6 +308,49 @@ BEGIN
 
     -- Select users if no exception
     SELECT * FROM USER WHERE SHOPID = SHOP_ID;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `IS_AUTHENTICATED` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `IS_AUTHENTICATED`(
+    IN USER_ID INT,
+    IN SHOP_ID INT
+)
+BEGIN
+
+     IF (SELECT COUNT(*) FROM USER WHERE USERID = USER_ID) = 0 THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT=   "User not found.";
+     END IF;
+     
+      IF (SELECT COUNT(*) FROM USER WHERE USERID = USER_ID AND isActive =1) = 0 THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT=   "You are not active user in this shop please contact shop owner.";
+     END IF;
+     
+     IF (SELECT COUNT(*) FROM shops WHERE shopId = SHOP_ID) = 0 THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT=   "Shop not found.";
+     END IF;
+     
+     IF (SELECT COUNT(*) FROM shops WHERE isActive = 1 AND shopId = SHOP_ID) = 0 THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT=   "Your shop is not active. Please contact the shop owner.";
+     END IF;
+     
+      IF (SELECT COUNT(*) FROM USER WHERE isActive = 1 AND shopId = SHOP_ID AND USERID =USER_ID) = 0 THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT=   "You don't have permissions.";
+     END IF; 
+     
+     SELECT * FROM USER WHERE SHOPID = SHOP_ID AND USERID = USER_ID;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -534,7 +683,7 @@ IF  (SELECT count(*) FROM SHOPS where username = SHOP_USER_NAME)=0 THEN
  SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = MESSAGE;
 END IF;
 
-  SELECT *  FROM USER WHERE USERNAME = IDENTIFIER AND SHOPID= (select SHOPID from shops where username = SHOP_USER_NAME);
+  SELECT *  FROM USER WHERE USERNAME = IDENTIFIER OR EMAIL = IDENTIFIER AND SHOPID= (select SHOPID from shops where username = SHOP_USER_NAME);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -551,4 +700,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-16 10:27:13
+-- Dump completed on 2024-09-18 11:51:27

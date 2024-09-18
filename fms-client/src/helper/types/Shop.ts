@@ -9,5 +9,4 @@ export interface IRegisterShop {
     village: string;
     city: string;
     shopId: number;
-    userId: number
-}
+ }

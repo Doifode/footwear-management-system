@@ -121,7 +121,7 @@ const AddEditUser: React.FC = () => {
 
     return (
 
-        <FMSFormCard title={params.id ? `Update Shop In ${state.shopName}` : ` Add User In ${state.shopName}`}>
+        <FMSFormCard title={params?.id ? `Update Shop In ${state?.shopName}` : ` Add User In ${state?.shopName}`}>
             <Box display="flex" justifyContent="center" alignItems="center">
                 <form onSubmit={handleSubmit}>
                     <Grid container spacing={2}>

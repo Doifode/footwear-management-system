@@ -1,6 +1,6 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Box, Grid2 as Grid, IconButton } from "@mui/material";
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Outlet, useNavigate } from "react-router-dom";
 import { routes } from '../../../helper/Constants';
 import FMSNavbar from "./FMSNavbar";
@@ -21,7 +21,7 @@ const Dashboard = () => {
                 <Grid bgcolor={"#1976D2"} className={"d-none d-xl-block d-lg-block"} size={2}>
                     <Box height={"100vh"}  >
                         {routes.map((page) => (
-                            <>
+                            <React.Fragment key={page.title}>
                                 {
                                     page.children.map((i) => <SideBarListItems
                                         isActive={Boolean((currentPath == i.path))}
@@ -30,7 +30,7 @@ const Dashboard = () => {
                                         key={i.path}
                                     />)
                                 }
-                            </>
+                            </React.Fragment>
 
                         ))}
                     </Box>

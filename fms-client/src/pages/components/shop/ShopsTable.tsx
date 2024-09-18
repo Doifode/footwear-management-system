@@ -11,9 +11,11 @@ import { IRegisterShop } from '../../../helper/types/Shop';
 import apiClient from '../../../httpConfig/apiInClient';
 import { activateShopByIdRoute, disableShopByIdRoute } from '../../../httpConfig/ApiRoutes';
 import FMSTableCard from '../../common/FMSTableCard';
+
 const ShopsTable = () => {
     const [shops, setShops] = useState<IRegisterShop[]>([]);
     const navigate = useNavigate();
+
     const getAllShops = async () => {
         try {
             const getAllShopsResponse = await apiClient.get<apiResponse<IRegisterShop[]>>("/shop");
@@ -66,13 +68,22 @@ const ShopsTable = () => {
             </>
         },
         {
-            field: 'shopId', headerName: 'Edit', width: 125, renderCell: (data) => <>
+            field: 'shopId', headerName: 'Edit', width: 100, renderCell: (data) => <>
                 {
                     <>
-                        <IconButton color="success" onClick={() => navigateUser(`/update-shop/${data.row.shopId}`)} className='px-2' >
+                        <IconButton title='Edit shop' color="success" onClick={() => navigateUser(`/update-shop/${data.row.shopId}`)} className='px-2' >
                             <EditIcon />
                         </IconButton>
-                        <IconButton color="warning" onClick={() =>
+                    </>
+                }
+
+            </>
+        },
+        {
+            field: "created", headerName: 'Users', width: 100, renderCell: (data) => <>
+                {
+                    <>
+                        <IconButton title='Manage Users' color="warning" onClick={() =>
                             navigate(`/user-list`,
                                 { state: { shopName: data.row.shopName, shopId: data.row.shopId } })} className='px-2' >
                             <RecentActorsSharpIcon />

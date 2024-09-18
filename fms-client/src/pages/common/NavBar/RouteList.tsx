@@ -25,6 +25,7 @@ const RouteList = () => {
                         <Route path='/update-shop/:id' element={<AddEditShop />}></Route>
                         <Route path='/shop-list' element={<ShopsTable />}></Route>
                         <Route path='/add-user' element={<AddEditUser />}></Route>
+                        <Route path='/update-user/:id' element={<AddEditUser />}></Route>
                         <Route path='/user-list' element={<UserTable />}></Route>
                     </Route>
                     <Route path='*' element={<FMSPageNotFound />}></Route>

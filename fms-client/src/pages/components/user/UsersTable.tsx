@@ -53,7 +53,7 @@ const UserTable = () => {
             field: 'shopId', headerName: 'Edit', width: 125, renderCell: (data) => <>
                 {
                     <>
-                        <IconButton color="success" onClick={() => navigateUser(`/update-shop/${data.row.shopId}`)} className='px-2' >
+                        <IconButton color="success" onClick={() => navigateUser(`/update-user/${data.row.shopId}`)} className='px-2' >
                             <EditIcon />
                         </IconButton>
                         <IconButton color="warning" onClick={() => navigateUser(`/add-user/${data.row.shopId}`)} className='px-2' >
@@ -82,7 +82,7 @@ const UserTable = () => {
                 rows={users}
                 rowSelection={false}
                 columns={columns}
-                getRowId={(data: IRegisterShop) => data.userId.toString()}
+                getRowId={(data: IRegisterShop) => data.shopId.toString()}
             />
         </FMSTableCard>
     );
