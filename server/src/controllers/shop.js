@@ -22,8 +22,8 @@ export const registerShop = (req, res, next) => {
             return Response.error(res, error.error.issues[0].message, 400)
         }
 
-        const { shopName, userName, state, district, city, landMark, tahsil } = req.body;
-        const registerShopQuery = `CALL register_shop('${shopName}','${userName}','${state}','${city}','${district}','${tahsil}','${landMark}')`;
+        const { shopName, userName, state, district, city, landMark, tahsil, createdBy, village } = req.body;
+        const registerShopQuery = `CALL register_shop('${shopName}','${userName}','${state}','${city}','${district}','${tahsil}','${landMark}','${createdBy}','${createdBy}','${village}')`;
 
         DB.query(registerShopQuery, (registerShopError, registerShopSuccess) => {
             if (registerShopError) {
@@ -56,10 +56,9 @@ export const updateShopById = (req, res, next) => {
         if (!error.success) {
             return Response.error(res, error.error.issues[0].message, 400)
         };
-        const shopId = req.params.id;
-
-        const { shopName, userName, state, district, city, landMark, tahsil } = req.body;
-        const updateShopByIdShopQuery = `CALL UPDATE_SHOP_BY_ID('${shopName}','${userName}','${state}','${city}','${district}','${tahsil}','${landMark}','${shopId}')`;
+ 
+        const { shopName, userName, state, district, city, landMark, tahsil,shopId,village } = req.body;
+        const updateShopByIdShopQuery = `CALL UPDATE_SHOP_BY_ID('${shopName}','${userName}','${state}','${city}','${district}','${tahsil}','${landMark}','${shopId}','${village}')`;
 
         DB.query(updateShopByIdShopQuery, (updateShopByIdShopError, updateShopByIdSuccess) => {
             if (updateShopByIdShopError) {
@@ -73,18 +72,18 @@ export const updateShopById = (req, res, next) => {
     }
 };
 
-export const deleteShopById = (req, res, next) => {
-    try {
-        const shopId = req.params.id;
-        const deleteShopBdIdQuery = `CALL DELETE_SHOP_BY_ID(${shopId})`;
-        DB.query(deleteShopBdIdQuery, (error, result) => {
-            if (error) return next(error);
-            return Response.success(res, "Success", 200, result[0][0]);
-        })
-    } catch (error) {
-        return next(error)
-    }
-};
+// export const deleteShopById = (req, res, next) => {
+//     try {
+//         const shopId = req.params.id;
+//         const deleteShopBdIdQuery = `CALL DELETE_SHOP_BY_ID(${shopId})`;
+//         DB.query(deleteShopBdIdQuery, (error, result) => {
+//             if (error) return next(error);
+//             return Response.success(res, "Success", 200, result[0][0]);
+//         })
+//     } catch (error) {
+//         return next(error)
+//     }
+// };
 
 export const disableShopById = (req, res, next) => {
     try {
@@ -92,21 +91,22 @@ export const disableShopById = (req, res, next) => {
         const deleteShopBdIdQuery = `CALL DISABLE_SHOP_BY_ID(${shopId})`;
         DB.query(deleteShopBdIdQuery, (error, result) => {
             if (error) return next(error);
-            return Response.success(res, "Success", 200, result[0][0]);
+            return Response.success(res, "Shop Disabled Successfully.", 200, result[0][0]);
         })
     } catch (error) {
         return next(error)
     }
-}
-export const restoreShopById = (req, res, next) => {
+};
+
+export const activateShopById = (req, res, next) => {
     try {
         const shopId = req.params.id;
-        const deleteShopBdIdQuery = `CALL RESTORE_SHOP_BY_ID(${shopId})`;
+        const deleteShopBdIdQuery = `CALL ACTIVATE_SHOP_BY_ID(${shopId})`;
         DB.query(deleteShopBdIdQuery, (error, result) => {
             if (error) return next(error);
-            return Response.success(res, "Success", 200, result[0][0]);
+            return Response.success(res, "Shop Activated Successfully.", 200, result[0][0]);
         })
     } catch (error) {
         return next(error)
     }
-}
+};
