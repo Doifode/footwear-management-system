@@ -1,15 +1,13 @@
-import { QueryClient, QueryClientProvider } from "react-query"
-import { ReactQueryDevtools } from "react-query/devtools"
-import RouteList from "./pages/common/RouteList"
+import { Provider } from "react-redux";
+import { store } from "./redux/Store";
+import RouteList from "./pages/common/NavBar/RouteList";
 
 const App = () => {
-  const client = new QueryClient();
   return (
-    < >
-      <QueryClientProvider client={client}>
+    <>
+      <Provider store={store} >
         <RouteList />
-        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-      </QueryClientProvider>
+      </Provider>
     </>
   )
 }

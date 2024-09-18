@@ -3,7 +3,7 @@ import { Field, Form, Formik } from 'formik';
 import { useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { ISetPassword } from '../../../helper/types/Auth';
-import UseSetPassword from '../../../hooks/api/auth/UseSetPassword';
+import { useActivateUserMutation } from '../../../redux/api/AuthApi';
 import FMSFormCard from '../../common/FMSFormCard';
 
 const validationSchema = Yup.object({
@@ -16,9 +16,13 @@ const validationSchema = Yup.object({
 });
 
 const SetPassword = () => {
-    const params = useParams<{ token: string }>()
-    const { mutate } = UseSetPassword()
-    const setPasswordHandler = (values: ISetPassword) => mutate(values);
+    const params = useParams<{ token: string }>();
+    const [activateUser] = useActivateUserMutation();
+    
+    const setPasswordHandler = async (values: ISetPassword) => {
+        const response = await activateUser(values);
+        console.log(response, "response")
+    }
 
     return (
         <FMSFormCard title='Set Password' containerClass='w-75'>

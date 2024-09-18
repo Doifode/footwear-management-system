@@ -1,8 +1,14 @@
-import { Box, Button, TextField } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import { Field, Form, Formik } from 'formik';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
+import { IUserLogin } from '../../../helper/types/Auth';
+import { useVerifyUserMutation } from '../../../redux/api/AuthApi';
+import { setUserDetailsAction } from '../../../redux/slice/Auth';
 import FMSFormCard from '../../common/FMSFormCard';
-import { Link } from 'react-router-dom';
+import FMSLoadingButton from '../../common/FMSLoadingButton';
 
 const validationSchema = Yup.object({
     password: Yup.string()
@@ -14,7 +20,19 @@ const validationSchema = Yup.object({
 });
 
 const Login = () => {
-    const LoginHandler = () => { };
+    const [verifyUser, { isLoading }] = useVerifyUserMutation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const LoginHandler = async (values: IUserLogin) => {
+        const { data } = await verifyUser(values);
+        if (data?.success) {
+            toast.success(data.message);
+            navigate("/");
+            dispatch(setUserDetailsAction(data.data))
+        } else {
+            toast.error(data?.message);
+        }
+    };
 
     return (
         <FMSFormCard title='Login' containerClass='w-75'>
@@ -62,9 +80,7 @@ const Login = () => {
                             />
                             <Link to={"/forgot-password"}>Forgot Password?</Link>
                         </Box>
-                        <Button type="submit" variant="contained" color="primary" fullWidth>
-                            Login
-                        </Button>
+                        <FMSLoadingButton isLoading={isLoading} label='Login' disabled={isLoading} type="submit" variant="contained" color="primary" fullWidth />
                     </Form>
                 )}
             </Formik>

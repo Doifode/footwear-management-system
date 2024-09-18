@@ -18,7 +18,7 @@ app.use("/api/auth/", authRouter);
 
 app.use(errorHandler);
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 2324, () => {
     try {
         console.log("server running on port", process.env.PORT);
     } catch (error) {

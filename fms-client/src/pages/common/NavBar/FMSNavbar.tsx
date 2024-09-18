@@ -8,13 +8,16 @@ import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { routerLinks } from '../../helper/Constants';
+import { routerLinks } from '../../../helper/Constants';
+import { IRootState } from '../../../helper/types/CommonTypes';
 
 
 const FMSNavbar = () => {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const navigate = useNavigate();
+    const { firstName, lastName } = useSelector((state: IRootState) => state.Auth.userDetails)
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -37,7 +40,7 @@ const FMSNavbar = () => {
                         component="div"
                         sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
                     >
-                        LOGO
+                        {`${firstName} ${lastName}`.toUpperCase()}
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

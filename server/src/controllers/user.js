@@ -1,7 +1,7 @@
 import { registerUserValidator, resetPasswordValidator } from "../validators/user.js";
 import DB from "../dbConnection.js"
 import ResponseHandler from "../utils/ResponseHandler.js";
-import bcryptjs from "bcryptjs"
+
 export const registerUser = async (req, res, next) => {
     try {
         const error = registerUserValidator.safeParse(req.body);
@@ -19,23 +19,7 @@ export const registerUser = async (req, res, next) => {
     }
 };
 
-export const setPassword = async (req, res, next) => {
-    try {
-        const error = resetPasswordValidator.safeParse(req.body);
-        if (!error.success) {
-            return ResponseHandler.error(res, error.error.issues[0].message, 400)
-        };
-        const { password, token, } = req.body;
-        const hashPassword = bcryptjs.hashSync(password, 10);
-        const registerUserQuery = `CALL SET_PASSWORD('${token}','${hashPassword}')`;
-        DB.query(registerUserQuery, (error, _result) => {
-            if (error) return next(error);
-            return ResponseHandler.success(res, "Password updated successfully!", 200,);
-        });
-    } catch (error) {
-        return next(error);
-    }
-};
+
 
 export const getUsersByShopId = async (req, res, next) => {
     try {

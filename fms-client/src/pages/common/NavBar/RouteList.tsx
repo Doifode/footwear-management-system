@@ -1,12 +1,15 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import AddEditShop from '../components/shop/AddEditShop'
-import Dashboard from '../components/Dashboard'
-import ShopsTable from '../components/shop/ShopsTable'
-import AddEditUser from '../components/user/AddEditUser'
-import UserTable from '../components/user/UsersTable'
-import AuthLayout from '../components/auth/AuthLayout'
-import SetPassword from '../components/auth/SetPassword'
-import Login from '../components/auth/Login'
+import SetPassword from '../../components/auth/SetPassword'
+import Dashboard from './Dashboard'
+import AddEditShop from '../../components/shop/AddEditShop'
+import FMSProtectRout from '../FMSProtectRout'
+import ShopsTable from '../../components/shop/ShopsTable'
+import AddEditUser from '../../components/user/AddEditUser'
+import UserTable from '../../components/user/UsersTable'
+import FMSPageNotFound from '../FMSPageNotFound'
+import AuthLayout from '../../components/auth/AuthLayout'
+import Login from '../../components/auth/Login'
+
 
 const RouteList = () => {
     return (
@@ -17,13 +20,14 @@ const RouteList = () => {
                         <Route path="/auth/activate-user/:token" element={<SetPassword />}></Route>
                         <Route path="/auth/login" element={<Login />}></Route>
                     </Route>
-                    <Route path='/' element={<Dashboard />}>
+                    <Route path='/' element={<FMSProtectRout children={<Dashboard />} />}>
                         <Route path='/add-shop' element={<AddEditShop />}></Route>
                         <Route path='/update-shop/:id' element={<AddEditShop />}></Route>
                         <Route path='/shop-list' element={<ShopsTable />}></Route>
                         <Route path='/add-user' element={<AddEditUser />}></Route>
                         <Route path='/user-list' element={<UserTable />}></Route>
                     </Route>
+                    <Route path='*' element={<FMSPageNotFound />}></Route>
                 </Routes>
             </BrowserRouter>
         </>

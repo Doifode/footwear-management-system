@@ -1,6 +1,8 @@
 import express from "express";
-import { verifyUser } from "../controllers/auth.js";
+import { setPassword, verifyUser } from "../controllers/auth.js";
 const router = express.Router();
 
-router.post("/verifyUser", verifyUser)
+router.post("/verifyUser", verifyUser);
+router.put("/setPassword", setPassword);
+
 export default router
