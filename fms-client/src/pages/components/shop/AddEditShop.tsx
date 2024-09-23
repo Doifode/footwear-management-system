@@ -1,19 +1,16 @@
 import { Box, Button, Container, Grid2, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import React, { ChangeEvent, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import { IRegisterShop } from '../../../helper/types/Shop';
-import apiClient from '../../../httpConfig/apiInClient';
-import FMSFormCard from '../../common/FMSFormCard';
-import { getShopByIdRoute, registerUpdateShopRoute } from '../../../httpConfig/ApiRoutes';
-import { useNavigate, useParams } from 'react-router-dom';
-import { apiResponse } from '../../../helper/types/CommonTypes';
-
+import { useAddShopMutation, useLazyGetShopByIdQuery, useUpdateShopMutation } from '../../../redux/api/ShopApi';
+import FMSFormCard from '../../../utils/common/FMSFormCard';
 
 const validationSchema = Yup.object({
     shopName: Yup.string().required('Shop Name is required'),
-    userName: Yup.string().required('User Name is required'),
+shopUserName: Yup.string().required('User Name is required'),
     state: Yup.string().required('State is required'),
     district: Yup.string().required('District is required'),
     tahsil: Yup.string().required('Tahsil is required'),
@@ -25,15 +22,19 @@ const validationSchema = Yup.object({
 const AddEditShop: React.FC = () => {
     const params = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const [getShopByIdQuery] = useLazyGetShopByIdQuery();
+    const [updateShop] = useUpdateShopMutation();
+    const [addShop] = useAddShopMutation();
+
     const handleRegisterShop = async (values: IRegisterShop) => {
         try {
-            const data = { ...values, createdBy: 0 }
-            const registerShopResponse = await apiClient.post<{ data: any, message: string, success: boolean }>(registerUpdateShopRoute, data);
-            if (registerShopResponse.data.success) {
-                toast.success(registerShopResponse.data.message);
+            const shop = { ...values, createdBy: 0 }
+            const { data } = await addShop(shop)
+            if (data?.success) {
+                toast.success(data?.message);
                 navigate("/shop-list");
             } else {
-                toast.error(registerShopResponse.data.message)
+                toast.error(data?.message)
             }
         } catch (error) {
             toast.error("Something went wrong.")
@@ -44,14 +45,14 @@ const AddEditShop: React.FC = () => {
 
     const handleUpdateShop = async (values: IRegisterShop) => {
         try {
-            const data = { ...values, createdBy: 0 }
-            const registerShopResponse = await apiClient.put<{ data: any, message: string, success: boolean }>(registerUpdateShopRoute, data);
-            if (registerShopResponse.data.success) {
-                toast.success(registerShopResponse.data.message);
+            const shop = { ...values, createdBy: 0 }
+            const { data } = await updateShop(shop)
+            if (data?.success) {
+                toast.success(data?.message);
                 navigate("/shop-list");
                 resetForm();
             } else {
-                toast.error(registerShopResponse.data.message);
+                toast.error(data?.message);
             }
         } catch (error) {
             toast.error("Something went wrong.")
@@ -61,7 +62,7 @@ const AddEditShop: React.FC = () => {
     const formik = useFormik<IRegisterShop>({
         initialValues: {
             shopName: "",
-            userName: '',
+            shopUserName: '',
             state: '',
             district: '',
             tahsil: '',
@@ -69,7 +70,7 @@ const AddEditShop: React.FC = () => {
             city: '',
             village: "",
             shopId: 0,
-         },
+        },
         enableReinitialize: true,
         validationSchema,
         onSubmit: (values: IRegisterShop) => {
@@ -97,29 +98,24 @@ const AddEditShop: React.FC = () => {
         if (e.target.value === " ") {
             return
         } else {
-            handleChange(e)
+            handleChange(e);
         }
     }
 
     const getShopById = async () => {
         try {
-            const getShopByIdResponse = await apiClient.get<apiResponse<IRegisterShop>>(`${getShopByIdRoute}${params.id}`);
-            if (getShopByIdResponse.data.success) {
-                if (getShopByIdResponse.data.data) {
-                    setValues(getShopByIdResponse.data.data);
-                }
+            const { data, isSuccess } = await getShopByIdQuery(params.id || "");
+            if (data?.success && isSuccess) {
+                setValues(data.data)
             }
-
-        } catch (error) {
-
+        } catch (error: any) {
+            toast.error(error.message)
         }
     }
 
     useEffect(() => {
-        if (params.id) {
-            getShopById()
-        }
-    }, [])
+        getShopById()
+    }, []);
 
     return (
         <Container className='d-flex justify-content-center align-items-center'>
@@ -137,7 +133,7 @@ const AddEditShop: React.FC = () => {
                                     fullWidth
                                     label="Shop Name"
                                     name="shopName"
-                                    value={values.shopName.trim()}
+                                    value={values.shopName?.trim()}
                                     onChange={handleSpace}
                                     onBlur={handleBlur}
                                     error={touched.shopName && Boolean(errors.shopName)}
@@ -150,12 +146,12 @@ const AddEditShop: React.FC = () => {
                                     size="small"
                                     fullWidth
                                     label="User Name"
-                                    name="userName"
-                                    value={values.userName.trim()}
+                                    name="shopUserName"
+                                    value={values.shopUserName?.trim()}
                                     onChange={handleSpace}
                                     onBlur={handleBlur}
-                                    error={touched.userName && Boolean(errors.userName)}
-                                    helperText={touched.userName && errors.userName}
+                                    error={touched.shopUserName && Boolean(errors.shopUserName)}
+                                    helperText={touched.shopUserName && errors.shopUserName}
                                 />
                             </Grid2>
 
@@ -165,7 +161,7 @@ const AddEditShop: React.FC = () => {
                                     fullWidth
                                     label="State"
                                     name="state"
-                                    value={values.state.trim()}
+                                    value={values.state?.trim()}
                                     onChange={handleSpace}
                                     onBlur={handleBlur}
                                     error={touched.state && Boolean(errors.state)}
@@ -179,7 +175,7 @@ const AddEditShop: React.FC = () => {
                                     fullWidth
                                     label="District"
                                     name="district"
-                                    value={values.district.trim()}
+                                    value={values.district?.trim()}
                                     onChange={handleSpace}
                                     onBlur={handleBlur}
                                     error={touched.district && Boolean(errors.district)}
@@ -193,7 +189,7 @@ const AddEditShop: React.FC = () => {
                                     fullWidth
                                     label="Tahsil"
                                     name="tahsil"
-                                    value={values.tahsil.trim()}
+                                    value={values.tahsil?.trim()}
                                     onChange={handleSpace}
                                     onBlur={handleBlur}
                                     error={touched.tahsil && Boolean(errors.tahsil)}
@@ -206,7 +202,7 @@ const AddEditShop: React.FC = () => {
                                     fullWidth
                                     label="Village Name"
                                     name="village"
-                                    value={values.village.trim()}
+                                    value={values.village?.trim()}
                                     onChange={handleSpace}
                                     onBlur={handleBlur}
                                     error={touched.village && Boolean(errors.village)}
@@ -220,7 +216,7 @@ const AddEditShop: React.FC = () => {
                                     fullWidth
                                     label="City"
                                     name="city"
-                                    value={values.city.trim()}
+                                    value={values.city?.trim()}
                                     onChange={handleSpace}
                                     onBlur={handleBlur}
                                     error={touched.city && Boolean(errors.city)}
@@ -240,8 +236,6 @@ const AddEditShop: React.FC = () => {
                                     helperText={touched.landMark && errors.landMark}
                                 />
                             </Grid2>
-
-
                             <Grid2 size={12} display="flex" justifyContent="start">
                                 <Button className='mx-2' type="submit" variant="contained" color="primary">
                                     Submit

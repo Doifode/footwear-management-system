@@ -8,18 +8,20 @@ import jwt from "jsonwebtoken";
 export const verifyUser = (req, res, next) => {
     try {
 
-        const { identifier, shopUserName } = req.body;
+        const { identifier } = req.body;
         const error = verifyUserValidator.safeParse(req.body);
 
         if (!error.success) {
             return ResponseHandler.error(res, error.error.issues[0].message, 400)
         };
 
-        const verifyUserQuery = `CALL VERIFY_USER('${identifier}','${shopUserName}');`;
+        const verifyUserQuery = `CALL VERIFY_USER('${identifier}');`;
         DB.query(verifyUserQuery, async (error, result) => {
             if (error) return next(error);
             if (result[0]?.length) {
-                return handleVerifyUserRespo(req, res, next, result);
+                return handleVerifyUserResponse(req, res, next, result);
+            } else {
+                return ResponseHandler.error(res, result, 200)
             }
         });
 
@@ -28,13 +30,13 @@ export const verifyUser = (req, res, next) => {
     }
 };
 
-const handleVerifyUserRespo = async (req, res, next, result) => {
+const handleVerifyUserResponse = async (req, res, next, result) => {
     try {
-        const compairePassword = await bcryptjs.compare(req.body.password, result[0][0].password);
-        if (compairePassword) {
+        const comparePassword = await bcryptjs.compare(req.body.password, result[0][0].password);
+        if (comparePassword) {
             const { password, activationToken, ...userDetails } = result[0][0]
             const token = jwt.sign(userDetails, process.env.SECRET, { expiresIn: "10 days" })
-            return ResponseHandler.success(res, "Login successfull.", 200, { token, ...userDetails });
+            return ResponseHandler.success(res, "Login successful.", 200, { token, ...userDetails });
         } else {
             return ResponseHandler.error(res, "Invalid Credentials.", 200, result);
         }

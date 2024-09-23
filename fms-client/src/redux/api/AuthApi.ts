@@ -6,7 +6,6 @@ export const AuthApis = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: "http://localhost:2304/api/auth/"
     }),
-
     endpoints: (builder) => ({
         activateUser: builder.mutation<apiResponse<[]>, ISetPassword>({
             query: (body) => ({

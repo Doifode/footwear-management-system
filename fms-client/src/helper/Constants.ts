@@ -4,10 +4,6 @@ export const routerLinks = [
         path: "/",
     },
     {
-        label: "Add Shop",
-        path: "/add-shop",
-    },
-    {
         label: "All Shops",
         path: "/shop-list",
     },
@@ -21,10 +17,6 @@ export const routes = [
             {
                 label: "Dashboard",
                 path: "/",
-            },
-            {
-                label: "Add Shop",
-                path: "/add-shop",
             },
             {
                 label: "All Shops",

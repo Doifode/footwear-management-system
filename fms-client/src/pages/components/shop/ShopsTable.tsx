@@ -3,41 +3,34 @@ import RecentActorsSharpIcon from '@mui/icons-material/RecentActorsSharp';
 import StoreSharpIcon from '@mui/icons-material/StoreSharp';
 import { Button, IconButton } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { apiResponse } from '../../../helper/types/CommonTypes';
 import { IRegisterShop } from '../../../helper/types/Shop';
-import apiClient from '../../../httpConfig/apiInClient';
 import { activateShopByIdRoute, disableShopByIdRoute } from '../../../httpConfig/ApiRoutes';
-import FMSTableCard from '../../common/FMSTableCard';
+import { useActivateShopMutation, useDisableShopMutation, useGetAllShopsQuery } from '../../../redux/api/ShopApi';
+import FMSTableCard from '../../../utils/common/FMSTableCard';
 
 const ShopsTable = () => {
-    const [shops, setShops] = useState<IRegisterShop[]>([]);
     const navigate = useNavigate();
-
-    const getAllShops = async () => {
-        try {
-            const getAllShopsResponse = await apiClient.get<apiResponse<IRegisterShop[]>>("/shop");
-            if (getAllShopsResponse.data.success) {
-                if (getAllShopsResponse.data.data?.length) {
-                    setShops(getAllShopsResponse.data.data);
-                }
-            }
-        } catch (error) {
-            console.error("Failed to fetch shops data", error);
-        }
-    };
+    const { isSuccess, data } = useGetAllShopsQuery("");
+    const [disableShop] = useDisableShopMutation()
+    const [activateShop] = useActivateShopMutation()
 
     const shopActions = async (route: string, shopId: number) => {
         try {
-            const shopActionResponse = await apiClient.delete<apiResponse<[]>>(`${route}${shopId}`);
-            if (shopActionResponse.data.success) {
-                toast.success(shopActionResponse.data.message);
-                getAllShops();
+            if (route === disableShopByIdRoute) {
+                const { data } = await disableShop(shopId);
+                if (data?.success) {
+                    toast.success(data.message)
+                }
             } else {
-                toast.error(shopActionResponse.data.message);
-            }
+                const { data } = await activateShop(shopId);
+                if (data?.success) {
+                    toast.success(data?.message)
+                }
+            };
+
         } catch (error) {
             console.log(error);
         }
@@ -48,7 +41,7 @@ const ShopsTable = () => {
 
     const columns: GridColDef[] = [
         { field: 'shopName', headerName: 'Shop Name', width: 150 },
-        { field: 'userName', headerName: 'User Name', width: 150 },
+        { field: 'shopUserName', headerName: 'Shop User Name', width: 150 },
         { field: 'state', headerName: 'State', width: 150 },
         { field: 'district', headerName: 'District', width: 150 },
         { field: 'tahsil', headerName: 'Tahsil', width: 150 },
@@ -97,21 +90,22 @@ const ShopsTable = () => {
     ];
 
     useEffect(() => {
-        getAllShops();
     }, []);
 
     return (
         <FMSTableCard title='Shop List' buttonLabel='Add Shop' buttonClick={() => navigate('/add-shop')}>
-            <DataGrid
+            {isSuccess ? <DataGrid
                 autoHeight={false}
                 autoPageSize={false}
+                hideFooterPagination
+                hideFooter
                 disableColumnFilter={true}
                 disableColumnMenu={true}
-                rows={shops}
+                rows={data?.data}
                 rowSelection={false}
                 columns={columns}
                 getRowId={(data: IRegisterShop) => data?.shopId?.toString() || (Math.random() * 1000)}
-            />
+            /> : "Loading....."}
         </FMSTableCard>
 
     );

@@ -1,14 +1,14 @@
 import { Box, Button, Grid2 as Grid, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import React, { ChangeEvent, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
-import { apiResponse } from '../../../helper/types/CommonTypes';
+import { IRootState } from '../../../helper/types/CommonTypes';
 import { IRegisterUser } from '../../../helper/types/User';
-import apiClient from '../../../httpConfig/apiInClient';
-import { getShopByIdRoute, registerUpdateUserRoute } from '../../../httpConfig/ApiRoutes';
-import FMSFormCard from '../../common/FMSFormCard';
+import { useAddUserMutation, useLazyGetUserByIdQuery, useUpdateUserMutation } from '../../../redux/api/UserApi';
+import FMSFormCard from '../../../utils/common/FMSFormCard';
 
 const validationSchema = Yup.object({
     firstName: Yup.string().required('First Name is required'),
@@ -23,17 +23,21 @@ const AddEditUser: React.FC = () => {
     const params = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { state } = useLocation();
+    const [addUser] = useAddUserMutation();
+    const [updateUser] = useUpdateUserMutation();
+    const [getUserByIdQuery] = useLazyGetUserByIdQuery();
+    const currentUserDetails = useSelector((state: IRootState) => state.Auth.userDetails)
 
     const handleRegisterUser = async (values: IRegisterUser) => {
         try {
             const activateUrl = `${window.location.origin}/auth/activate-user`
-            const data = { ...values, shopId: state.shopId, createdBy: 1, activateUrl }; // Set createdBy to 1
-            const registerUserResponse = await apiClient.post<{ data: any, message: string, success: boolean }>(registerUpdateUserRoute, data);
-            if (registerUserResponse.data.success) {
-                toast.success(registerUserResponse.data.message);
+            const user = { ...values, shopId: state.shopId, createdBy: currentUserDetails.userId, activateUrl }; // Set createdBy to 1
+            const { data } = await addUser(user)
+            if (data?.success) {
+                toast.success(data?.message);
                 navigate(`/user-list`, { state });
             } else {
-                toast.error(registerUserResponse.data.message)
+                toast.error(data?.message)
             }
         } catch (error) {
             toast.error("Something went wrong.")
@@ -44,14 +48,14 @@ const AddEditUser: React.FC = () => {
 
     const handleUpdateShop = async (values: IRegisterUser) => {
         try {
-            const data = { ...values, shopId: state.shopId, createdBy: 1 }; // Set createdBy to 1
-            const registerUserResponse = await apiClient.put<{ data: any, message: string, success: boolean }>(registerUpdateUserRoute, data);
-            if (registerUserResponse.data.success) {
-                toast.success(registerUserResponse.data.message);
+            const user = { ...values, shopId: state.shopId, updatedBy: currentUserDetails.userId }; // Set createdBy to 1
+            const { data } = await updateUser(user)
+            if (data?.success) {
+                toast.success(data?.message);
                 navigate(`/user-list`, { state });
                 resetForm();
             } else {
-                toast.error(registerUserResponse.data.message);
+                toast.error(data?.message);
             }
         } catch (error) {
             toast.error("Something went wrong.")
@@ -66,8 +70,8 @@ const AddEditUser: React.FC = () => {
             mobileNo: '',
             email: '',
             userName: '',
-            roleId: 0
-            // Remove unused fields
+            roleId: 0,
+            userId: 0
         },
         enableReinitialize: true,
         validationSchema,
@@ -99,25 +103,21 @@ const AddEditUser: React.FC = () => {
             return handleChange(e);
         }
     }
-
-    const getShopById = async () => {
+    const getUserById = async () => {
         try {
-            const getShopByIdResponse = await apiClient.get<apiResponse<IRegisterUser>>(`${getShopByIdRoute}${params.id}`);
-            if (getShopByIdResponse.data.success) {
-                if (getShopByIdResponse.data.data) {
-                    setValues(getShopByIdResponse.data.data);
-                }
+            const { data, isSuccess } = await getUserByIdQuery(params.id || "");
+            if (data?.success && isSuccess) {
+                setValues(data.data)
             }
-        } catch (error) {
-            // Handle error
+        } catch (error: any) {
+            toast.error(error.message)
         }
     }
-
     useEffect(() => {
         if (params.id) {
-            getShopById();
+            getUserById()
         }
-    }, []);
+    }, [])
 
     return (
 

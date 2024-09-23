@@ -5,6 +5,5 @@ export interface ISetPassword {
 
 export interface IUserLogin {
     identifier: string,
-    shopUserName: string
     password: string,
 };

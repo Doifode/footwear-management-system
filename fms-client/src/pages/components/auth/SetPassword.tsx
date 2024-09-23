@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { ISetPassword } from '../../../helper/types/Auth';
 import { useActivateUserMutation } from '../../../redux/api/AuthApi';
-import FMSFormCard from '../../common/FMSFormCard';
+import FMSFormCard from '../../../utils/common/FMSFormCard';
 
 const validationSchema = Yup.object({
     password: Yup.string()

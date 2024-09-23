@@ -1,30 +1,16 @@
 import EditIcon from '@mui/icons-material/Edit';
-import RecentActorsSharpIcon from '@mui/icons-material/RecentActorsSharp';
 import { IconButton, Typography } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { apiResponse } from '../../../helper/types/CommonTypes';
-import { IRegisterShop } from '../../../helper/types/Shop';
-import apiClient from '../../../httpConfig/apiInClient';
-import FMSTableCard from '../../common/FMSTableCard';
+import { IRegisterUser } from '../../../helper/types/User';
+import { useGetAllUsersByShopIdQuery } from '../../../redux/api/UserApi';
+import FMSTableCard from '../../../utils/common/FMSTableCard';
 const UserTable = () => {
-    const [users, setUsers] = useState<IRegisterShop[]>([]);
     const navigate = useNavigate();
     const { state } = useLocation();
-
-    const getAllUsers = async () => {
-        try {
-            const getAllUsersResponse = await apiClient.get<apiResponse<IRegisterShop[]>>("/user/" + state.shopId);
-            if (getAllUsersResponse.data.success) {
-                if (getAllUsersResponse.data.data?.length) {
-                    setUsers(getAllUsersResponse.data.data);
-                }
-            }
-        } catch (error) {
-            console.error("Failed to fetch users data", error);
-        }
-    };
+    const { data } = useGetAllUsersByShopIdQuery(state.shopId, {
+        refetchOnMountOrArgChange: true,
+    })
 
     const navigateUser = (path: string) => {
         navigate(path);
@@ -35,6 +21,7 @@ const UserTable = () => {
         { field: 'lastName', headerName: 'Last Name', width: 150 },
         { field: 'userName', headerName: 'User Name', width: 150 },
         { field: 'mobileNo', headerName: 'Mobile No.', width: 150 },
+        { field: 'roleName', headerName: 'Role', width: 150 },
         {
             field: 'isActive', headerName: 'Active', width: 125, renderCell: (data) => <>
                 {
@@ -53,11 +40,8 @@ const UserTable = () => {
             field: 'shopId', headerName: 'Edit', width: 125, renderCell: (data) => <>
                 {
                     <>
-                        <IconButton color="success" onClick={() => navigateUser(`/update-user/${data.row.shopId}`)} className='px-2' >
+                        <IconButton color="success" onClick={() => navigateUser(`/add-user/${data.row.shopId}`)} className='px-2' >
                             <EditIcon />
-                        </IconButton>
-                        <IconButton color="warning" onClick={() => navigateUser(`/add-user/${data.row.shopId}`)} className='px-2' >
-                            <RecentActorsSharpIcon />
                         </IconButton>
                     </>
                 }
@@ -67,10 +51,6 @@ const UserTable = () => {
 
     ];
 
-    useEffect(() => {
-        getAllUsers();
-    }, []);
-
     return (
 
         <FMSTableCard title={`${state?.shopName}  Users`} buttonClick={() => navigate("/add-user", { state: state })} buttonLabel='Add User' >
@@ -79,10 +59,10 @@ const UserTable = () => {
                 autoPageSize={false}
                 disableColumnFilter={true}
                 disableColumnMenu={true}
-                rows={users}
+                rows={data?.data}
                 rowSelection={false}
                 columns={columns}
-                getRowId={(data: IRegisterShop) => data.shopId.toString()}
+                getRowId={(data: IRegisterUser) => data.userId.toString()}
             />
         </FMSTableCard>
     );

@@ -1,6 +1,6 @@
-import { registerUserValidator, resetPasswordValidator } from "../validators/user.js";
-import DB from "../dbConnection.js"
+import DB from "../dbConnection.js";
 import ResponseHandler from "../utils/ResponseHandler.js";
+import { registerUserValidator } from "../validators/user.js";
 
 export const registerUser = async (req, res, next) => {
     try {
@@ -24,27 +24,28 @@ export const registerUser = async (req, res, next) => {
 export const getUsersByShopId = async (req, res, next) => {
     try {
         const shopId = req.params.shopId;
-        const getUsersByShopIdQuery = `CALL GET_USERS_BY_SHOP_ID(${shopId})`
+        const userId = req.user.userId
+        const getUsersByShopIdQuery = `CALL GET_USERS_BY_SHOP_ID(${shopId},${userId})`
         DB.query(getUsersByShopIdQuery, (error, result) => {
             if (error) return next(error);
             return ResponseHandler.success(res, "", 200, result[0])
         })
 
     } catch (error) {
-
+        return next();
     }
 };
 
 export const getUserById = async (req, res, next) => {
-         try {
-            const shopId = req.params.shopId;
-            const getUsersByShopIdQuery = `CALL GET_USERS_BY_SHOP_ID(${shopId})`
-            DB.query(getUsersByShopIdQuery, (error, result) => {
-                if (error) return next(error);
-                return ResponseHandler.success(res, "", 200, result[0])
-            });
-    
-        } catch (error) {
-    
-        }
- }
+    try {
+        const userId = req.params.userId;
+        const getUsersByShopIdQuery = `CALL GET_USER_BY_ID(${userId},${10})`
+        DB.query(getUsersByShopIdQuery, (error, result) => {
+            if (error) return next(error);
+            return ResponseHandler.success(res, "", 200, result[0])
+        });
+
+    } catch (error) {
+
+    }
+}

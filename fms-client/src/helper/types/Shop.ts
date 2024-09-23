@@ -1,7 +1,7 @@
 
 export interface IRegisterShop {
     shopName: string;
-    userName: string;
+    shopUserName: string;
     state: string;
     district: string;
     tahsil: string;

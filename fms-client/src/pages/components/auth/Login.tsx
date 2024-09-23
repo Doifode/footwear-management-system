@@ -7,8 +7,8 @@ import * as Yup from 'yup';
 import { IUserLogin } from '../../../helper/types/Auth';
 import { useVerifyUserMutation } from '../../../redux/api/AuthApi';
 import { setUserDetailsAction } from '../../../redux/slice/Auth';
-import FMSFormCard from '../../common/FMSFormCard';
-import FMSLoadingButton from '../../common/FMSLoadingButton';
+import FMSFormCard from '../../../utils/common/FMSFormCard';
+import FMSLoadingButton from '../../../utils/common/FMSLoadingButton';
 
 const validationSchema = Yup.object({
     password: Yup.string()
@@ -16,7 +16,6 @@ const validationSchema = Yup.object({
         .required('Password is required'),
     identifier: Yup.string()
         .required('Username Or Email is required.'),
-    shopUserName: Yup.string().required("Shop Username is required.")
 });
 
 const Login = () => {
@@ -37,7 +36,7 @@ const Login = () => {
     return (
         <FMSFormCard title='Login' containerClass='w-75'>
             <Formik
-                initialValues={{ identifier: "", shopUserName: "", password: '', }}
+                initialValues={{ identifier: "", password: '', }}
                 validationSchema={validationSchema}
                 onSubmit={LoginHandler}
             >
@@ -53,18 +52,6 @@ const Login = () => {
                                 fullWidth
                                 error={touched.identifier && Boolean(errors.identifier)}
                                 helperText={touched.identifier && errors.identifier}
-                            />
-                        </Box>
-                        <Box mb={2}>
-                            <Field
-                                size="small"
-                                as={TextField}
-                                name="shopUserName"
-                                label="Shop Username"
-                                type="shopUserName"
-                                fullWidth
-                                error={touched.shopUserName && Boolean(errors.shopUserName)}
-                                helperText={touched.shopUserName && errors.shopUserName}
                             />
                         </Box>
                         <Box mb={2}>

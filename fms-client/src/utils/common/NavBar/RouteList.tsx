@@ -1,14 +1,14 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import SetPassword from '../../components/auth/SetPassword'
+import SetPassword from '../../../pages/components/auth/SetPassword'
 import Dashboard from './Dashboard'
-import AddEditShop from '../../components/shop/AddEditShop'
+import AddEditShop from '../../../pages/components/shop/AddEditShop'
 import FMSProtectRout from '../FMSProtectRout'
-import ShopsTable from '../../components/shop/ShopsTable'
-import AddEditUser from '../../components/user/AddEditUser'
-import UserTable from '../../components/user/UsersTable'
+import ShopsTable from '../../../pages/components/shop/ShopsTable'
+import AddEditUser from '../../../pages/components/user/AddEditUser'
+import UserTable from '../../../pages/components/user/UsersTable'
 import FMSPageNotFound from '../FMSPageNotFound'
-import AuthLayout from '../../components/auth/AuthLayout'
-import Login from '../../components/auth/Login'
+import AuthLayout from '../../../pages/components/auth/AuthLayout'
+import Login from '../../../pages/components/auth/Login'
 
 
 const RouteList = () => {
@@ -25,6 +25,7 @@ const RouteList = () => {
                         <Route path='/update-shop/:id' element={<AddEditShop />}></Route>
                         <Route path='/shop-list' element={<ShopsTable />}></Route>
                         <Route path='/add-user' element={<AddEditUser />}></Route>
+                        <Route path='/add-user/:id' element={<AddEditUser />}></Route>
                         <Route path='/update-user/:id' element={<AddEditUser />}></Route>
                         <Route path='/user-list' element={<UserTable />}></Route>
                     </Route>

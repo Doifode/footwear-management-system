@@ -57,8 +57,8 @@ export const updateShopById = (req, res, next) => {
             return Response.error(res, error.error.issues[0].message, 400)
         };
  
-        const { shopName, userName, state, district, city, landMark, tahsil,shopId,village } = req.body;
-        const updateShopByIdShopQuery = `CALL UPDATE_SHOP_BY_ID('${shopName}','${userName}','${state}','${city}','${district}','${tahsil}','${landMark}','${shopId}','${village}')`;
+        const { shopName, shopUserName, state, district, city, landMark, tahsil,shopId,village } = req.body;
+        const updateShopByIdShopQuery = `CALL UPDATE_SHOP_BY_ID('${shopName}','${shopUserName}','${state}','${city}','${district}','${tahsil}','${landMark}','${shopId}','${village}')`;
 
         DB.query(updateShopByIdShopQuery, (updateShopByIdShopError, updateShopByIdSuccess) => {
             if (updateShopByIdShopError) {

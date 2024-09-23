@@ -6,5 +6,6 @@ export interface IRegisterUser {
     mobileNo: string;
     email: string;
     roleId: number,
-    shopId: number
+    shopId: number,
+    userId:number
 }
