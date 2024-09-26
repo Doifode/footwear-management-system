@@ -1,13 +1,28 @@
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
- 
-const FMSPageNotFound: React.FC = () => {
+interface pageNotFoundProps {
+  statusCode: number,
+  title: string,
+  subTitle: string,
+  buttonLabel: string,
+  navigatePath?: string
+}
+const FMSPageNotFound: React.FC<pageNotFoundProps> = ({
+  statusCode,
+  title,
+  subTitle,
+  buttonLabel,
+  navigatePath }) => {
   const navigate = useNavigate();
 
   const handleGoToLogin = () => {
-    navigate("/auth/login")
-   };
+    if (navigatePath) {
+      navigate(navigatePath)
+    } else {
+      navigate(-1)
+    }
+  };
 
   return (
     <Box
@@ -19,16 +34,16 @@ const FMSPageNotFound: React.FC = () => {
       textAlign="center"
     >
       <Typography variant="h1" color="error">
-        404
+        {statusCode}
       </Typography>
       <Typography variant="h5" color="textSecondary">
-        Oops! Page Not Found
+        {title}
       </Typography>
       <Typography variant="body1" mt={2} mb={4}>
-        The page you're looking for doesn't exist or has been moved.
+        {subTitle}
       </Typography>
       <Button variant="contained" color="primary" onClick={handleGoToLogin}>
-        Go to Login Page
+        {buttonLabel}
       </Button>
     </Box>
   );

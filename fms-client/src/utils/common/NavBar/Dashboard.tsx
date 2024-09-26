@@ -5,10 +5,14 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { routes } from '../../../helper/Constants';
 import FMSNavbar from "./FMSNavbar";
 import { SideBarListItems } from './ListItems';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../../helper/types/CommonTypes';
+import ActionButtons from '../ActionButtons';
 
 const Dashboard = () => {
     const navigate = useNavigate();
-    const [currentPath, setCurrentPath] = useState(sessionStorage.getItem("currentPath") || "/")
+    const [currentPath, setCurrentPath] = useState(sessionStorage.getItem("currentPath") || "/");
+    const { roleId } = useSelector((state: IRootState) => state.Auth.userDetails)
     const handleNavigation = (path: string) => {
         navigate(path);
         setCurrentPath(path);
@@ -24,6 +28,7 @@ const Dashboard = () => {
                             <React.Fragment key={page.title}>
                                 {
                                     page.children.map((i) => <SideBarListItems
+                                        isHidden={!i.roleAccessArray.includes(roleId)}
                                         isActive={Boolean((currentPath == i.path))}
                                         label={i.label}
                                         navigate={() => handleNavigation(i.path)}
@@ -40,6 +45,7 @@ const Dashboard = () => {
                     <IconButton size="small" onClick={() => navigate(-1)} > <ArrowBackIcon /> Back</IconButton>
                     <Outlet />
                 </Grid>
+                <ActionButtons />
             </Grid>
         </>
     )

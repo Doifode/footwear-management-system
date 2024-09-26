@@ -4,7 +4,7 @@ export const checkRoleMatching = (...role) => {
     return (req, res, next) => {
 
         if (role.includes(req.user.roleId)) {
-             return next();
+            return next();
         } else {
             return ResponseHandler.error(res, "Not have permission.", 200)
         }

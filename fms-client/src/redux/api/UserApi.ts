@@ -18,7 +18,7 @@ export const UserApi = createApi({
     tagTypes: ["getUsers"],
     endpoints: (builder) => ({
         getAllUsersByShopId: builder.query<apiResponse<IRegisterUser[]>, string>({
-            query: (shopId: string) => `/${shopId}`,
+            query: (shopId: string) => `/getUsers/${shopId}`,
             providesTags: ['getUsers']
         }),
         addUser: builder.mutation<apiResponse<[]>, IRegisterUser>({
@@ -27,8 +27,8 @@ export const UserApi = createApi({
         updateUser: builder.mutation<apiResponse<[]>, IRegisterUser>({
             query: (body: IRegisterUser) => ({ url: `/`, method: "PUT", body }),
         }),
-        getUserById: builder.query<apiResponse<IRegisterUser>, string>({
-            query: (userId: string) => ({ url: `/user/${userId}` }),
+        getUserById: builder.query<apiResponse<IRegisterUser>, { userId: number, shopId: number }>({
+            query: (data: { userId: number, shopId: number }) => ({ url: `/getUserById/`, params: data }),
         }),
 
     })

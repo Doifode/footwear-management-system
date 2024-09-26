@@ -7,7 +7,7 @@ const App = () => {
     <>
       <Provider store={store} >
         <RouteList />
-      </Provider>
+       </Provider>
     </>
   )
 }

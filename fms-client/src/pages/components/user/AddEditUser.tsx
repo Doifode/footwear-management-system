@@ -22,11 +22,11 @@ const validationSchema = Yup.object({
 const AddEditUser: React.FC = () => {
     const params = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { state } = useLocation();
+    const { state }: { state: { shopId: number, userId: number, shopName: string } } = useLocation();
     const [addUser] = useAddUserMutation();
     const [updateUser] = useUpdateUserMutation();
     const [getUserByIdQuery] = useLazyGetUserByIdQuery();
-    const currentUserDetails = useSelector((state: IRootState) => state.Auth.userDetails)
+    const currentUserDetails = useSelector((state: IRootState) => state.Auth.userDetails);
 
     const handleRegisterUser = async (values: IRegisterUser) => {
         try {
@@ -35,9 +35,9 @@ const AddEditUser: React.FC = () => {
             const { data } = await addUser(user)
             if (data?.success) {
                 toast.success(data?.message);
-                navigate(`/user-list`, { state });
+                navigate(`/user-list`, { state, replace: true });
             } else {
-                toast.error(data?.message)
+                toast.error(data?.message);
             }
         } catch (error) {
             toast.error("Something went wrong.")
@@ -46,13 +46,13 @@ const AddEditUser: React.FC = () => {
         }
     };
 
-    const handleUpdateShop = async (values: IRegisterUser) => {
+    const handleUserUpdate = async (values: IRegisterUser) => {
         try {
-            const user = { ...values, shopId: state.shopId, updatedBy: currentUserDetails.userId }; // Set createdBy to 1
+            const user = { ...values, mobileNo: values.mobileNo.toString(), shopId: state.shopId };
             const { data } = await updateUser(user)
             if (data?.success) {
                 toast.success(data?.message);
-                navigate(`/user-list`, { state });
+                navigate(`/user-list`, { state, replace: true });
                 resetForm();
             } else {
                 toast.error(data?.message);
@@ -76,8 +76,8 @@ const AddEditUser: React.FC = () => {
         enableReinitialize: true,
         validationSchema,
         onSubmit: (values: IRegisterUser) => {
-            if (params.id) {
-                return handleUpdateShop(values);
+            if (state.userId) {
+                return handleUserUpdate(values);
             } else {
                 return handleRegisterUser(values);
             }
@@ -93,7 +93,8 @@ const AddEditUser: React.FC = () => {
         handleSubmit,
         handleReset,
         handleBlur,
-        resetForm
+        resetForm,
+        dirty
     } = formik;
 
     const handleSpace = (e: ChangeEvent<HTMLInputElement>) => {
@@ -103,24 +104,25 @@ const AddEditUser: React.FC = () => {
             return handleChange(e);
         }
     }
+
     const getUserById = async () => {
         try {
-            const { data, isSuccess } = await getUserByIdQuery(params.id || "");
+            const { data, isSuccess } = await getUserByIdQuery(state);
             if (data?.success && isSuccess) {
-                setValues(data.data)
+                console.log(data.data, "data.data")
+                setValues(data.data);
             }
         } catch (error: any) {
             toast.error(error.message)
         }
     }
     useEffect(() => {
-        if (params.id) {
-            getUserById()
+        if (state) {
+            getUserById();
         }
     }, [])
 
     return (
-
         <FMSFormCard title={params?.id ? `Update Shop In ${state?.shopName}` : ` Add User In ${state?.shopName}`}>
             <Box display="flex" justifyContent="center" alignItems="center">
                 <form onSubmit={handleSubmit}>
@@ -131,7 +133,7 @@ const AddEditUser: React.FC = () => {
                                 fullWidth
                                 label="First Name"
                                 name="firstName"
-                                value={values.firstName.trim()}
+                                value={values.firstName?.trim()}
                                 onChange={handleSpace}
                                 onBlur={handleBlur}
                                 error={touched.firstName && Boolean(errors.firstName)}
@@ -145,7 +147,7 @@ const AddEditUser: React.FC = () => {
                                 fullWidth
                                 label="Last Name"
                                 name="lastName"
-                                value={values.lastName.trim()}
+                                value={values.lastName?.trim()}
                                 onChange={handleSpace}
                                 onBlur={handleBlur}
                                 error={touched.lastName && Boolean(errors.lastName)}
@@ -159,7 +161,8 @@ const AddEditUser: React.FC = () => {
                                 fullWidth
                                 label="User Name"
                                 name="userName"
-                                value={values.userName.trim()}
+                                value={values.userName?.trim()}
+                                disabled={Boolean(values.userId) ? true : false}
                                 onChange={handleSpace}
                                 onBlur={handleBlur}
                                 error={touched.userName && Boolean(errors.userName)}
@@ -173,7 +176,7 @@ const AddEditUser: React.FC = () => {
                                 fullWidth
                                 label="Mobile Number"
                                 name="mobileNo"
-                                value={values.mobileNo.trim()}
+                                value={values?.mobileNo}
                                 onChange={handleSpace}
                                 onBlur={handleBlur}
                                 error={touched.mobileNo && Boolean(errors.mobileNo)}
@@ -186,8 +189,9 @@ const AddEditUser: React.FC = () => {
                                 size="small"
                                 fullWidth
                                 label="Email"
+                                disabled={Boolean(values.userId) ? true : false}
                                 name="email"
-                                value={values.email.trim()}
+                                value={values.email?.trim()}
                                 onChange={handleSpace}
                                 onBlur={handleBlur}
                                 error={touched.email && Boolean(errors.email)}
@@ -215,7 +219,7 @@ const AddEditUser: React.FC = () => {
                         </Grid>
 
                         <Grid size={12} display="flex" justifyContent="start">
-                            <Button className='mx-2' type="submit" variant="contained" color="primary">
+                            <Button disabled={!dirty} className='mx-2' type="submit" variant="contained" color="primary">
                                 Submit
                             </Button>
                             <Button className='mx-2' onClick={handleReset} variant="outlined" color="secondary">

@@ -1,4 +1,4 @@
-import { Box, TextField } from '@mui/material';
+import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
 import { Field, Form, Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,6 +9,8 @@ import { useVerifyUserMutation } from '../../../redux/api/AuthApi';
 import { setUserDetailsAction } from '../../../redux/slice/Auth';
 import FMSFormCard from '../../../utils/common/FMSFormCard';
 import FMSLoadingButton from '../../../utils/common/FMSLoadingButton';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useState } from 'react';
 
 const validationSchema = Yup.object({
     password: Yup.string()
@@ -22,6 +24,9 @@ const Login = () => {
     const [verifyUser, { isLoading }] = useVerifyUserMutation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+
     const LoginHandler = async (values: IUserLogin) => {
         const { data } = await verifyUser(values);
         if (data?.success) {
@@ -60,10 +65,23 @@ const Login = () => {
                                 as={TextField}
                                 name="password"
                                 label="Password"
-                                type="password"
                                 fullWidth
                                 error={touched.password && Boolean(errors.password)}
                                 helperText={touched.password && errors.password}
+                                type={showPassword ? "text" : "password"}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                edge="end"
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }}
                             />
                             <Link to={"/forgot-password"}>Forgot Password?</Link>
                         </Box>

@@ -9,12 +9,14 @@ interface SideBarItemsProps {
     label: string,
     icon?: React.ReactNode,
     navigate?: () => void,
-    isActive?: boolean
+    isActive?: boolean,
+    isHidden: boolean
 }
 
-export const SideBarListItems: React.FC<SideBarItemsProps> = ({ label, navigate, isActive }) => {
+export const SideBarListItems: React.FC<SideBarItemsProps> = ({ label, navigate, isActive, isHidden }) => {
     return (
         <List
+            hidden={isHidden}
             sx={{ width: '100%', maxWidth: 360, }}
             component="nav"
             aria-labelledby="nested-list-subheader"

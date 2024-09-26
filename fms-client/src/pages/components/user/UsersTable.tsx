@@ -5,16 +5,16 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { IRegisterUser } from '../../../helper/types/User';
 import { useGetAllUsersByShopIdQuery } from '../../../redux/api/UserApi';
 import FMSTableCard from '../../../utils/common/FMSTableCard';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../../helper/types/CommonTypes';
 const UserTable = () => {
     const navigate = useNavigate();
     const { state } = useLocation();
-    const { data } = useGetAllUsersByShopIdQuery(state.shopId, {
+    const { shopId } = useSelector((state: IRootState) => state.Auth.userDetails);
+    const currentShopId = state?.shopId ? state.shopId : shopId
+    const { data } = useGetAllUsersByShopIdQuery(currentShopId, {
         refetchOnMountOrArgChange: true,
     })
-
-    const navigateUser = (path: string) => {
-        navigate(path);
-    };
 
     const columns: GridColDef[] = [
         { field: 'firstName', headerName: 'First Name', width: 150 },
@@ -40,7 +40,10 @@ const UserTable = () => {
             field: 'shopId', headerName: 'Edit', width: 125, renderCell: (data) => <>
                 {
                     <>
-                        <IconButton color="success" onClick={() => navigateUser(`/add-user/${data.row.shopId}`)} className='px-2' >
+                        <IconButton color="success" onClick={
+                            () => navigate(`/update-user`, {
+                                state: { userId: data.row.userId, shopId: data.row.shopId }
+                            })} className='px-2' >
                             <EditIcon />
                         </IconButton>
                     </>
@@ -53,7 +56,7 @@ const UserTable = () => {
 
     return (
 
-        <FMSTableCard title={`${state?.shopName}  Users`} buttonClick={() => navigate("/add-user", { state: state })} buttonLabel='Add User' >
+        <FMSTableCard title={`${state?.shopName}  Users`} buttonClick={() => navigate("/add-user", { state: { shopId: currentShopId } })} buttonLabel='Add User' >
             <DataGrid
                 autoHeight={false}
                 autoPageSize={false}
