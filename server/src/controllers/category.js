@@ -12,22 +12,23 @@ export const registerCategory = async (req, res, next) => {
         const shopId = req.user.shopId
         const createdBy = req.user.userId
 
-        const registerCategoryQuery = `CALL REGISTER_CATEGORY('${categoryName}','${shopId}','${createdBy}')`;
+        const registerCategoryQuery = `CALL REGISTER_CATEGORY('${categoryName}','${createdBy}','${shopId}')`;
         DB.query(registerCategoryQuery, (error, result) => {
             if (error) return next(error);
-            return ResponseHandler.success(res, "Category registered successfully!", 200, `${activateUrl}/${result[0][0].activationToken}`);
+            if (result.affectedRows) {
+                return ResponseHandler.success(res, "Category added successfully!", 200, result);
+            }
         });
     } catch (error) {
         return next(error)
     }
 };
 
-export const getUsersByShopId = async (req, res, next) => {
+export const getCategoriesByShopId = async (req, res, next) => {
     try {
-        const shopId = req.params.shopId;
-        const userId = req.user.userId
-        const getUsersByShopIdQuery = `CALL GET_USERS_BY_SHOP_ID(${shopId},${userId})`
-        DB.query(getUsersByShopIdQuery, (error, result) => {
+        const shopId = req.user.shopId;
+         const getCategoriesByShopIdQuery = `CALL GET_ALL_CATEGORIES(${shopId})`
+        DB.query(getCategoriesByShopIdQuery, (error, result) => {
             if (error) return next(error);
             return ResponseHandler.success(res, "", 200, result[0])
         });
