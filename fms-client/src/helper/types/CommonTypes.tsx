@@ -22,7 +22,10 @@ interface IUserDetails {
 
 interface IAuth {
     userDetails: IUserDetails;
- }
+}
+interface ITheme {
+    mode: "dark" | "light";
+}
 
 interface IApiConfig {
     online: boolean;
@@ -46,5 +49,6 @@ interface IApi {
 
 export interface IRootState {
     Auth: IAuth;
+    Theme: ITheme;
     api: IApi;
 }

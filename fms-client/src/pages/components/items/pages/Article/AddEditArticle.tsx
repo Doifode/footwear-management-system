@@ -57,12 +57,13 @@ const AddEditArticle: React.FC<AddEditArticleProps> = ({ initialValues, onClose 
                 fullWidth
                 className='mt-4'
                 disablePortal
-                value={{ brandId: initialValues.brandId, brandName: initialValues.brandName }}
+                value={{ brandId: formik.values.brandId, brandName: formik.values.brandName }}
                 options={data?.data || []}
                 getOptionLabel={(option) => option.brandName}
                 onChange={(_, value) => {
                     if (value) {
                         formik.setFieldValue("brandId", value.brandId)
+                        formik.setFieldValue("brandName", value.brandName)
                     }
                 }}
                 renderInput={(params) => <TextField name='brandId' {...params} label="Brands Name" />}

@@ -52,7 +52,7 @@ const CategoryTable = () => {
                 columns={columns}
                 getRowId={(data: ICategory) => data.categoryId.toString()}
             />
-            <FMSDialogBox open={handleOpenDialog} title="Add Category" key={1} onClose={handleCloseDialog}>
+            <FMSDialogBox open={handleOpenDialog} title="Add Category"   onClose={handleCloseDialog}>
                 <AddEditCategory initialValues={selectedCategory} onClose={handleCloseDialog} />
             </FMSDialogBox>
         </FMSTableCard>

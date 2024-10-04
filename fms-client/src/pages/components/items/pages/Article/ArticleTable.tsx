@@ -52,7 +52,7 @@ const ArticleTable = () => {
         columns={columns}
         getRowId={(data: IArticle) => data.articleId.toString()}
       />
-      <FMSDialogBox open={handleOpenDialog} title="Add Article" key={1} onClose={handleCloseDialog}>
+      <FMSDialogBox open={handleOpenDialog} title="Add Article" onClose={handleCloseDialog}>
         <AddEditArticle initialValues={selectedArticle} onClose={handleCloseDialog} />
       </FMSDialogBox>
     </FMSTableCard>

@@ -1,4 +1,5 @@
 import ItemTabs from "../pages/components/items/ItemTabs"
+import AddEditProduct from "../pages/components/products/AddEditProduct"
 import ProductTable from "../pages/components/products/ProductTable"
 import AddEditShop from "../pages/components/shop/AddEditShop"
 import ShopsTable from "../pages/components/shop/ShopsTable"
@@ -90,6 +91,16 @@ export const allRoutesList = [
     {
         routeName: "/product-list",
         component: <ProductTable />,
+        accessArray: [2]
+    },
+    {
+        routeName: "/add-product",
+        component: <AddEditProduct />,
+        accessArray: [2]
+    },
+    {
+        routeName: "/update-product",
+        component: <AddEditProduct />,
         accessArray: [2]
     }
 ]

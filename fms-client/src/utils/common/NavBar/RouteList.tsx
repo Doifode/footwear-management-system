@@ -1,12 +1,13 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { allRoutesList } from '../../../helper/Constants'
-import AuthLayout from '../../../pages/components/auth/AuthLayout'
-import Login from '../../../pages/components/auth/Login'
-import SetPassword from '../../../pages/components/auth/SetPassword'
+
 import FMSPageNotFound from '../FMSPageNotFound'
 import FMSProtectRout from '../FMSProtectRout'
 import Dashboard from './Dashboard'
-
+import AuthLayout from '../../../pages/auth/AuthLayout'
+import SetPassword from '../../../pages/auth/SetPassword'
+import Login from '../../../pages/auth/Login'
+ 
 
 const RouteList = () => {
     return (
@@ -32,7 +33,7 @@ const RouteList = () => {
                             subTitle="The page you're looking for doesn't exist or has been moved."
                             title="Oops! Page Not Found"
                         />}></Route >
-                 </Routes>
+                </Routes>
             </BrowserRouter>
         </>
     )

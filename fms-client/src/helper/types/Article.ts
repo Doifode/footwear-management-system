@@ -1,6 +1,7 @@
-import { IBrand } from "./Brand";
 
-export interface IArticle extends IBrand {
+export interface IArticle {
     articleName: string,
     articleId: number,
+    brandId?: number,
+    brandName?: string
 }

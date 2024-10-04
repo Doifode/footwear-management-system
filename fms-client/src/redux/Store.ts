@@ -8,6 +8,7 @@ import { CategoryApi } from "./api/CategoryApi";
 import { BrandApi } from "./api/BrandApi";
 import { ArticleApi } from "./api/ArticleApi";
 import { ProductApi } from "./api/ProductApi";
+import { ColorApi } from "./api/ColorApi";
 
 export const store = configureStore({
     reducer: RootReducer,
@@ -20,6 +21,7 @@ export const store = configureStore({
                 CategoryApi.middleware,
                 BrandApi.middleware,
                 ArticleApi.middleware,
+                ColorApi.middleware,
                 ProductApi.middleware,
             )
 });;

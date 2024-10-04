@@ -1,6 +1,6 @@
 
-export interface IBrand {
-    brandName: string,
-    brandId: number,
-    shopId?: number
-}
+    export interface IBrand {
+        brandName: string,
+        brandId: number,
+        shopId?: number
+    }

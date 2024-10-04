@@ -1,4 +1,4 @@
-export interface IProduct {
+export interface IRegisterProduct {
     productId: number;
     productName: string;
     articleId: number;
@@ -18,4 +18,22 @@ export interface IProduct {
     categoryName?: string;
     articleName?: string;
     colorName?: string;
+    sellingPrice: number
+};
+
+
+export interface ISizeType {
+    size: number,
+    quantity: number,
+    isAdded: boolean,
+    productId: number,
+    isEditing: boolean
+}
+
+export interface IGetSizes {
+    "productName": string,
+    "articleId": number,
+    "categoryId": number,
+    "shopId": number,
+    "colorId": number
 }

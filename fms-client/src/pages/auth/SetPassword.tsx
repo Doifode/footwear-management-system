@@ -2,9 +2,10 @@ import { Box, Button, TextField } from '@mui/material';
 import { Field, Form, Formik } from 'formik';
 import { useParams } from 'react-router-dom';
 import * as Yup from 'yup';
-import { ISetPassword } from '../../../helper/types/Auth';
-import { useActivateUserMutation } from '../../../redux/api/AuthApi';
-import FMSFormCard from '../../../utils/common/FMSFormCard';
+import { ISetPassword } from '../../helper/types/Auth';
+import FMSFormCard from '../../utils/common/FMSFormCard';
+import { useActivateUserMutation } from '../../redux/api/AuthApi';
+
 
 const validationSchema = Yup.object({
     password: Yup.string()
@@ -18,7 +19,7 @@ const validationSchema = Yup.object({
 const SetPassword = () => {
     const params = useParams<{ token: string }>();
     const [activateUser] = useActivateUserMutation();
-    
+
     const setPasswordHandler = async (values: ISetPassword) => {
         const response = await activateUser(values);
         console.log(response, "response")

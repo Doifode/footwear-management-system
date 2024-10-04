@@ -51,11 +51,11 @@ const TabPanels: React.FC<ItemsTabsProps> = ({ props }) => {
         <Box sx={{ width: '100%' }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                    {props?.map((item) => <Tab key={item.index} label={item.label} {...a11yProps(item.index)} />)}
+                    {props?.map((item) => <Tab key={Math.floor(Math.random() * (10000 + item.index))} label={item.label} {...a11yProps(item.index)} />)}
                 </Tabs>
             </Box>
             {props?.map((item) =>
-                <CustomTabPanel key={item.index} value={value} index={item.index}>
+                <CustomTabPanel key={Math.floor(Math.random() * 10000 - item.index)} value={value} index={item.index}>
                     {item.component}
                 </CustomTabPanel>)
             }

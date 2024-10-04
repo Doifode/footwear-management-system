@@ -4,13 +4,13 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
-import { IUserLogin } from '../../../helper/types/Auth';
-import { useVerifyUserMutation } from '../../../redux/api/AuthApi';
-import { setUserDetailsAction } from '../../../redux/slice/Auth';
-import FMSFormCard from '../../../utils/common/FMSFormCard';
-import FMSLoadingButton from '../../../utils/common/FMSLoadingButton';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useState } from 'react';
+import FMSLoadingButton from '../../utils/common/FMSLoadingButton';
+import FMSFormCard from '../../utils/common/FMSFormCard';
+import { setUserDetailsAction } from '../../redux/slice/Auth';
+import { IUserLogin } from '../../helper/types/Auth';
+import { useVerifyUserMutation } from '../../redux/api/AuthApi';
 
 const validationSchema = Yup.object({
     password: Yup.string()

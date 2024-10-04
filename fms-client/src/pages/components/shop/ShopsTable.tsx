@@ -3,7 +3,6 @@ import RecentActorsSharpIcon from '@mui/icons-material/RecentActorsSharp';
 import StoreSharpIcon from '@mui/icons-material/StoreSharp';
 import { Button, IconButton } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { IRegisterShop } from '../../../helper/types/Shop';
@@ -88,9 +87,6 @@ const ShopsTable = () => {
         }
 
     ];
-
-    useEffect(() => {
-    }, []);
 
     return (
         <FMSTableCard title='Shop List' buttonLabel='Add Shop' buttonClick={() => navigate('/add-shop')}>

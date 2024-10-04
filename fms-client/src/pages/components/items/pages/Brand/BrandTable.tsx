@@ -51,7 +51,7 @@ const BrandsTable = () => {
                 columns={columns}
                 getRowId={(data: IBrand) => data.brandId.toString()}
             />
-            <FMSDialogBox open={handleOpenDialog} title="Add Category" key={1} onClose={handleCloseDialog}>
+            <FMSDialogBox open={handleOpenDialog} title="Add Category"   onClose={handleCloseDialog}>
                 <AddEditBrand initialValues={selectedCategory} onClose={handleCloseDialog} />
             </FMSDialogBox>
         </FMSTableCard>
