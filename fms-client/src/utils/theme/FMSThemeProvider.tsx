@@ -1,5 +1,7 @@
 import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
+
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { IRootState } from '../../helper/types/CommonTypes';

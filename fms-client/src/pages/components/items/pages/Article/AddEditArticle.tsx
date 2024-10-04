@@ -57,7 +57,7 @@ const AddEditArticle: React.FC<AddEditArticleProps> = ({ initialValues, onClose 
                 fullWidth
                 className='mt-4'
                 disablePortal
-                value={{ brandId: formik.values.brandId, brandName: formik.values.brandName }}
+                value={{ brandId: formik.values.brandId||0, brandName: formik.values.brandName||"" }}
                 options={data?.data || []}
                 getOptionLabel={(option) => option.brandName}
                 onChange={(_, value) => {
