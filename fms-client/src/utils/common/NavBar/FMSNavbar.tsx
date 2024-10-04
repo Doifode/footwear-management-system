@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { routerLinks } from '../../../helper/Constants';
+import { routes } from '../../../helper/Constants';
 import { IRootState } from '../../../helper/types/CommonTypes';
 
 
@@ -21,6 +21,7 @@ const FMSNavbar = () => {
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
+    const { roleId } = useSelector((state: IRootState) => state.Auth.userDetails);
 
     const handleCloseNavMenu = (path: string) => {
         setAnchorElNav(null);
@@ -69,8 +70,10 @@ const FMSNavbar = () => {
                             onClose={handleCloseNavMenu}
                             sx={{ display: { xs: 'block', md: 'none' } }}
                         >
-                            {routerLinks.map((page) => (
-                                <MenuItem key={page.path} onClick={() => handleCloseNavMenu(page.path)}>
+                            {routes[0].children.map((page) => (
+                                <MenuItem
+                                    hidden={!page.roleAccessArray.includes(roleId)}
+                                    key={page.path} onClick={() => handleCloseNavMenu(page.path)}>
                                     <Typography textAlign="center">{page.label}</Typography>
                                 </MenuItem>
                             ))}

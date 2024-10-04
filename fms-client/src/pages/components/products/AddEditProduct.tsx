@@ -276,7 +276,6 @@ const AddEditProductForm = () => {
                         )}
                     />
                 </Grid2>
-
                 <Grid2 size={3}>
                     <TextField
                         fullWidth
@@ -369,7 +368,6 @@ const AddEditProductForm = () => {
                         error={formik.touched.quantity && Boolean(formik.errors.quantity)}
                         helperText={formik.touched.quantity && formik.errors.quantity}
                     />
-
                 </Grid2>
                 <Grid2 size={2} hidden={!isFormDisabled}>
                     <Button type="button" onClick={() => {

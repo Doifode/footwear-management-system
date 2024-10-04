@@ -5,17 +5,7 @@ import AddEditShop from "../pages/components/shop/AddEditShop"
 import ShopsTable from "../pages/components/shop/ShopsTable"
 import AddEditUser from "../pages/components/user/AddEditUser"
 import UserTable from "../pages/components/user/UsersTable"
-
-export const routerLinks = [
-    {
-        label: "Dashboard",
-        path: "/",
-    },
-    {
-        label: "All Shops",
-        path: "/shop-list",
-    },
-]
+ 
 
 export const routes = [
 
