@@ -7,12 +7,13 @@ import { IRegisterProduct } from '../../../helper/types/Product';
 import { useGetAllProductsQuery } from '../../../redux/api/ProductApi';
 import FMSTableCard from '../../../utils/common/FMSTableCard';
 import FilterProduct from './FilterProduct';
+import { SunspotLoader, } from "react-awesome-loaders";
 
 const ProductTable = () => {
   const navigate = useNavigate();
   const { isSuccess, data } = useGetAllProductsQuery(null);
   const [productList, setProductList] = useState<IRegisterProduct[]>(data?.data || [])
-
+  const [isLoading, setIsLoading] = useState(false)
   const columns: GridColDef[] = [
     { field: 'productName', headerName: 'Product Name', width: 150 },
     { field: 'brandName', headerName: 'Brand Name', width: 150 },
@@ -50,21 +51,25 @@ const ProductTable = () => {
 
   return (
     <FMSTableCard title='Shop List' buttonLabel='Add Product' buttonClick={() => navigate('/add-product')}>
-      <FilterProduct setProductList={setProductList}></FilterProduct>
-      {isSuccess ? <DataGrid
-        autoHeight={false}
-        autoPageSize={false}
+      <FilterProduct setIsLoading={setIsLoading} setProductList={setProductList}></FilterProduct>
+
+      {(isSuccess || isLoading) ? <DataGrid
         hideFooterPagination
         hideFooter
         disableColumnFilter={true}
         disableColumnMenu={true}
         rows={productList}
-        style={{ maxHeight: "400px" }}
-        rowSelection={false}
+        style={{ height: "350px", maxHeight: "450px", overflow: "hidden" }}
         columns={columns}
         onRowClick={(data) => navigate(`/update-product/ `, { state: data.row })}
         getRowId={(data: IRegisterProduct) => data?.productId?.toString()}
-      /> : "Loading....."}
+      /> :
+        <SunspotLoader
+          gradientColors={["#fefefe", "#Eeorndr"]}
+          shadowColor={"#ffffer"}
+          desktopSize={"128px"}
+          mobileSize={"100px"}
+        />}
     </FMSTableCard>
   );
 };

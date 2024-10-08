@@ -154,7 +154,12 @@ const AddEditProductForm = () => {
                         handleSizeArrayAdded(index, true);
                         if (index === (sizeArray.length - 1)) {
                             toast.success("Products updated successfully.");
+                            navigate("/product-list");
                         }
+                    } else {
+                        toast.error(data?.message);
+                        setSizeArray([])
+                        return;
                     }
                 } else {
                     const { data } = await addProduct(productValue);
@@ -162,13 +167,15 @@ const AddEditProductForm = () => {
                         handleSizeArrayAdded(index, true);
                         if (index === (sizeArray.length - 1)) {
                             toast.success("Products added successfully.");
+                            navigate("/product-list");
                         }
+                    } else {
+                        toast.error(data?.message);
+                        setSizeArray([])
+                        return;
                     }
+                }
 
-                }
-                if (index == (sizeArray.length - 1)) {
-                    navigate("/product-list");
-                }
             });
         } catch (error) {
             console.log(error);

@@ -5,7 +5,7 @@ import AddEditShop from "../pages/components/shop/AddEditShop"
 import ShopsTable from "../pages/components/shop/ShopsTable"
 import AddEditUser from "../pages/components/user/AddEditUser"
 import UserTable from "../pages/components/user/UsersTable"
- 
+
 
 export const routes = [
 
@@ -25,7 +25,7 @@ export const routes = [
             {
                 label: "All Users",
                 path: "/user-list",
-                roleAccessArray: [1, 2]
+                roleAccessArray: [2]
             },
             {
                 label: "Items",

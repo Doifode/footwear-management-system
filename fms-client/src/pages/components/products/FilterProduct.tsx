@@ -7,10 +7,11 @@ import { useGetAllColorsQuery } from '../../../redux/api/ColorApi';
 import { useSearchProductMutation } from '../../../redux/api/ProductApi';
 
 interface FilterProductProps {
-    setProductList: any
+    setProductList: any,
+    setIsLoading: any
 }
 
-const FilterProduct: React.FC<FilterProductProps> = ({ setProductList }) => {
+const FilterProduct: React.FC<FilterProductProps> = ({ setProductList, setIsLoading }) => {
 
     const { data } = useGetAllCategoriesQuery(null);
     const { data: articleList } = useGetAllArticlesQuery(null,);
@@ -19,9 +20,13 @@ const FilterProduct: React.FC<FilterProductProps> = ({ setProductList }) => {
     const [filterData, setFilteredData] = useState<IGetSizes>({ articleId: 0, categoryId: 0, colorId: 0, productName: "", shopId: 0 });
 
     const handleSearch = async () => {
+        setIsLoading(false)
         const { data } = await searchProduct(filterData)
         if (data?.success) {
-            setProductList(data?.data)
+            setProductList(data?.data);
+            setIsLoading(true)
+        } else {
+            setIsLoading(true)
         }
     }
 
