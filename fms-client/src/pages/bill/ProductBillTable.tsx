@@ -34,7 +34,6 @@ export default function ProductTable() {
 
     return (<>
         <FilterProduct setLoading={setLoading} setBillingArray={setProductListArray} />
-
         <Button variant='contained' color="success" className='my-1' onClick={() => setIsCheckOut(true)} hidden={isCheckOut}> Checkout</Button>
         <Button variant='contained' color="error" className='my-1' onClick={() => setIsCheckOut(false)} hidden={!isCheckOut}> Change </Button>
         <TableContainer component={Paper}>
@@ -91,7 +90,7 @@ export default function ProductTable() {
                                         value={product.finalPrice} />
                                 </TableCell>
                                 <TableCell>
-                                    <DeleteForeverIcon onClick={() => handleRemoveProduct(productIndex)} color='error' />
+                                    <DeleteForeverIcon className='pointer' onClick={() => handleRemoveProduct(productIndex)} color='error' />
                                 </TableCell>
                             </TableRow>
                         ))}

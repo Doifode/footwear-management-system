@@ -1,10 +1,10 @@
 import { Box } from "@mui/system"
-import ProductTable from "./ProductTable"
+import ProductBillTable from "./ProductBillTable"
 
 const Billing = () => {
     return (
         <Box>
-            <ProductTable />
+            <ProductBillTable />
         </Box>
     )
 }
