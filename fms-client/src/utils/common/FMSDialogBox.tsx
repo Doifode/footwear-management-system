@@ -14,7 +14,7 @@ interface FMSDialogBoxProps {
 
 const FMSDialogBox: React.FC<FMSDialogBoxProps> = ({ open, onClose, title, children }) => {
     return (
-        <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+        <Dialog open={open} onClose={onClose} fullWidth >
             <DialogTitle>
                 {title}
                 <IconButton

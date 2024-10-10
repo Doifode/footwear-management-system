@@ -7,7 +7,6 @@ import { IRegisterProduct } from '../../../helper/types/Product';
 import { useGetAllProductsQuery } from '../../../redux/api/ProductApi';
 import FMSTableCard from '../../../utils/common/FMSTableCard';
 import FilterProduct from './FilterProduct';
-import { SunspotLoader, } from "react-awesome-loaders";
 
 const ProductTable = () => {
   const navigate = useNavigate();
@@ -64,12 +63,7 @@ const ProductTable = () => {
         onRowClick={(data) => navigate(`/update-product/ `, { state: data.row })}
         getRowId={(data: IRegisterProduct) => data?.productId?.toString()}
       /> :
-        <SunspotLoader
-          gradientColors={["#fefefe", "#Eeorndr"]}
-          shadowColor={"#ffffer"}
-          desktopSize={"128px"}
-          mobileSize={"100px"}
-        />}
+        "Loading...."}
     </FMSTableCard>
   );
 };

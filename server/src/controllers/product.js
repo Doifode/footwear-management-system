@@ -1,6 +1,6 @@
 import DB from "../dbConnection.js";
 import ResponseHandler from "../utils/ResponseHandler.js";
-import { deleteProductValidator, getSizeProductValidator, registerProductValidator } from "../validators/Product.js";
+import { deleteProductValidator, getSizeProductBillingValidator, getSizeProductValidator, registerProductValidator } from "../validators/Product.js";
 
 export const registerProduct = async (req, res, next) => {
     try {
@@ -123,13 +123,39 @@ export const searchProduct = async (req, res, next) => {
         } else {
             DB.query(updateProductQuery, (error, result) => {
                 if (error) return next(error);
-                if (result[0].length) {
+                if (result[0]?.length) {
                     return ResponseHandler.success(res, "", 200, result[0]);
                 } else {
                     return ResponseHandler.error(res, "Products not found.", 200, [])
                 }
             });
         }
+    } catch (error) {
+        return next(error);
+    }
+};
+export const searchBillingProduct = async (req, res, next) => {
+    try {
+        const error = getSizeProductBillingValidator.safeParse(req.body);
+        if (!error.success) {
+            return ResponseHandler.error(res, error.error.issues[0].message, 400)
+        }
+        const {
+            articleId,
+            colorId,
+            size
+        } = req.body;
+        const shopId = req.user.shopId;
+
+        const getProductToBillQuery = `CALL GET_PRODUCT_TO_BILL(${articleId},${colorId},${size},${shopId})`;
+        DB.query(getProductToBillQuery, (error, result) => {
+            if (error) return next(error);
+            if (result[0]?.length) {
+                return ResponseHandler.success(res, "", 200, result[0]);
+            } else {
+                return ResponseHandler.error(res, "Products not found.", 200, [])
+            }
+        });
     } catch (error) {
         return next(error);
     }
@@ -147,7 +173,7 @@ export const deleteProductById = async (req, res, next) => {
         const {
             productId,
         } = req.body;
-        
+
         const shopId = req.user.shopId;
         const deleteProductQuery = `CALL DELETE_PRODUCT(${productId},${shopId})`;
 

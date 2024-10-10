@@ -22,9 +22,14 @@ export const getSizeProductValidator = z.object({
     shopId: z.number("Shop Id required."),
     colorId: z.number("Color Id required."),
 });
+export const getSizeProductBillingValidator = z.object({
+    articleId: z.number("Article Id required."),
+    colorId: z.number("Color Id required."),
+    size: z.number("Size Id required."),
+});
 export const deleteProductValidator = z.object({
     productId: z.number("productName required."),
-  
+
 });
 
 

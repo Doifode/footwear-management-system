@@ -18,7 +18,8 @@ export interface IRegisterProduct {
     categoryName?: string;
     articleName?: string;
     colorName?: string;
-    sellingPrice: number
+    sellingPrice: number,
+    finalPrice?:number
 };
 
 
@@ -36,4 +37,17 @@ export interface IGetSizes {
     "categoryId": number,
     "shopId": number,
     "colorId": number
+}
+export interface IGetProductBilling {
+    "articleId": number,
+    "colorId": number,
+    size: string,
+    colorName: string,
+    articleName: string,
+    colorCode: string
+}
+export interface IGetProduct {
+    "articleId": number,
+    "colorId": number,
+    size: number
 }

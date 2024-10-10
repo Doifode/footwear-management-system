@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IGetSizes, IRegisterProduct, ISizeType } from "../../helper/types/Product";
 import { apiResponse, IRootState } from "../../helper/types/CommonTypes";
+import { IGetProduct, IGetProductBilling, IGetSizes, IRegisterProduct, ISizeType } from "../../helper/types/Product";
 
 export const ProductApi = createApi({
 
@@ -39,6 +39,9 @@ export const ProductApi = createApi({
         }),
         deleteProduct: builder.mutation<apiResponse<IRegisterProduct>, { productId: number }>({
             query: (body: { productId: number }) => ({ url: `/`, method: "DELETE", body })
+        }),
+        getProductForBilling: builder.mutation<apiResponse<IRegisterProduct[]>, IGetProduct>({
+            query: (body: IGetProduct) => ({ url: `/searchBillingProduct`, method: "POST", body })
         })
     }),
 });
@@ -50,5 +53,6 @@ export const {
     useGetProductSizeListMutation,
     useUpdateProductMutation,
     useSearchProductMutation,
-    useDeleteProductMutation
+    useDeleteProductMutation,
+    useGetProductForBillingMutation
 } = ProductApi;

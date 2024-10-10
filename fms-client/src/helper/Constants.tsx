@@ -1,3 +1,4 @@
+import Billing from "../pages/bill/Billing"
 import ItemTabs from "../pages/components/items/ItemTabs"
 import AddEditProduct from "../pages/components/products/AddEditProduct"
 import ProductTable from "../pages/components/products/ProductTable"
@@ -35,6 +36,11 @@ export const routes = [
             {
                 label: "Product List",
                 path: "/product-list",
+                roleAccessArray: [2]
+            },
+            {
+                label: "Bill",
+                path: "/bill",
                 roleAccessArray: [2]
             }
         ]
@@ -91,6 +97,11 @@ export const allRoutesList = [
     {
         routeName: "/update-product",
         component: <AddEditProduct />,
+        accessArray: [2]
+    },
+    {
+        routeName: "/bill",
+        component: <Billing />,
         accessArray: [2]
     }
 ]
