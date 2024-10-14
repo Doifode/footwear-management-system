@@ -8,6 +8,7 @@ export const registerUserValidator = z.object({
     "mobileNo": z.string(({ message: "Please enter mobile no." })).max(25).min(1, "Please enter mobile no."),
     createdBy: z.number(({ message: "Please provide created by id." }))
 });
+
 export const resetPasswordValidator = z.object({
     "token": z.string(({ message: "Invalid link." })).max(36).min(1, "Invalid link."),
     "password": z.string(({ message: "Please enter Password." })).max(25).min(1, "Please enter Password."),

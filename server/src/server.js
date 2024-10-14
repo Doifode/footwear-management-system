@@ -8,6 +8,8 @@ import brandRouter from "./routes/brand.js"
 import articleRouter from "./routes/article.js"
 import productRouter from "./routes/product.js"
 import colorRoute from "./routes/color.js"
+import customerRoute from "./routes/customer.js"
+import mainBillRoute from "./routes/mainBill.js"
 import env from "dotenv";
 import { errorHandler } from "./utils/ErrorHandler.js";
 import { isAuthenticated } from "./utils/middlewares/isAuthenticated.js";
@@ -26,6 +28,8 @@ app.use("/api/brand/", isAuthenticated, checkRoleMatching(2), brandRouter);
 app.use("/api/article/", isAuthenticated, checkRoleMatching(2), articleRouter);
 app.use("/api/product/", isAuthenticated, checkRoleMatching(2), productRouter);
 app.use("/api/color/", isAuthenticated, checkRoleMatching(2), colorRoute);
+app.use("/api/customer/", isAuthenticated, checkRoleMatching(2, 3), customerRoute);
+app.use("/api/mainBill/", isAuthenticated, checkRoleMatching(2, 3), mainBillRoute);
 app.use("/api/auth/", authRouter);
 
 app.use(errorHandler);
