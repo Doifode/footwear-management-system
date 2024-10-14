@@ -1,4 +1,5 @@
 import Billing from "../pages/bill/Billing"
+import FinalBill from "../pages/bill/FinalBill"
 import ItemTabs from "../pages/components/items/ItemTabs"
 import AddEditProduct from "../pages/components/products/AddEditProduct"
 import ProductTable from "../pages/components/products/ProductTable"
@@ -43,6 +44,7 @@ export const routes = [
                 path: "/bill",
                 roleAccessArray: [2]
             }
+
         ]
     }
 ]
@@ -102,6 +104,11 @@ export const allRoutesList = [
     {
         routeName: "/bill",
         component: <Billing />,
+        accessArray: [2]
+    },
+    {
+        routeName: "/payment",
+        component: <FinalBill />,
         accessArray: [2]
     }
 ]

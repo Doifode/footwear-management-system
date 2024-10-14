@@ -31,7 +31,7 @@ const FilterProduct: React.FC<FilterProductProps> = ({ setBillingArray, setLoadi
             if (data?.success) {
                 if (data?.data.length == 1) {
                     setBillingArray((pre: IRegisterProduct[]) => {
-                        const modifiedData = data.data.map((item) => ({ ...item, finalPrice: item.sellingPrice, quantity: 1 }))
+                        const modifiedData = data.data.map((item) => ({ ...item, finalPrice: item.sellingPrice, quantity: 1, offeredDiscount: item.discount }))
                         return [...modifiedData, ...pre]
                     });
                     setFilteredData({ articleId: 0, size: "", colorId: 0, articleName: "", colorName: "", colorCode: "" })

@@ -11,25 +11,34 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { calculateDiscount } from '../../helper/Functions';
 import { IRegisterProduct } from '../../helper/types/Product';
+import CalculationBar from './CalculationBar';
 import FilterProduct from './FilterProduct';
-import PaymentBar from './PaymentBar';
+import { useDispatch, useSelector } from 'react-redux';
+import { IRootState } from '../../helper/types/CommonTypes';
+import { setActiveBillProduct } from '../../redux/slice/Bill';
 
 export default function ProductTable() {
-    const [productListArray, setProductListArray] = useState<IRegisterProduct[]>([]);
+    const activeProductBillingList = useSelector((state: IRootState) => state.Bill.activeBillProduct)
+    const [productListArray, setProductListArray] = useState<IRegisterProduct[]>(activeProductBillingList);
     const [isCheckOut, setIsCheckOut] = useState(false);
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
 
-    const handleFinalPrice = (index: number, value: number, keyVal: "quantity" | 'finalPrice' | "discount") => {
+
+    const handleFinalPrice = (index: number, value: number, keyVal: "quantity" | 'finalPrice' | "offeredDiscount") => {
         setProductListArray((pre) => pre.map((item, i) => {
             if (i === index) {
                 return { ...item, [keyVal]: value }
             } else {
-                return item
+                return item;
             }
         }))
     };
+
     const handleRemoveProduct = (index: number) => {
         setProductListArray(productListArray.filter((_, i) => i != index));
+        dispatch(setActiveBillProduct({ productList: productListArray.filter((_, i) => i != index), totalValues: {} }));
+
     }
 
     return (<>
@@ -67,7 +76,7 @@ export default function ProductTable() {
                                 <TableCell >{product.colorName}</TableCell>
                                 <TableCell >{product.size}</TableCell>
                                 <TableCell >{product.mrp}</TableCell>
-                                <TableCell >{product.discount} %</TableCell>
+                                <TableCell >{product.offeredDiscount} %</TableCell>
                                 <TableCell >{product.sellingPrice}</TableCell>
                                 <TableCell style={{ width: "auto" }} >
                                     {product.quantity}
@@ -84,7 +93,7 @@ export default function ProductTable() {
                                         handleFinalPrice(productIndex, Number(e.target.value), 'finalPrice')
                                         handleFinalPrice(productIndex,
                                             (calculateDiscount((product.quantity * product.sellingPrice), Number(e.target.value))),
-                                            'discount')
+                                            'offeredDiscount')
                                     }}
                                         type="text"
                                         value={product.finalPrice} />
@@ -97,7 +106,7 @@ export default function ProductTable() {
                     </TableBody>}
             </Table>
         </TableContainer>
-        {productListArray.length ? <PaymentBar productListArray={productListArray} /> : ""}
+        {productListArray.length && isCheckOut ? <CalculationBar productListArray={productListArray} /> : ""}
     </>
     );
 }

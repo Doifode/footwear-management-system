@@ -8,7 +8,7 @@ export const registerMainBill = async (req, res, next) => {
         if (!error.success) {
             return ResponseHandler.error(res, error.error.issues[0].message, 400)
         };
-        
+
         const { itemQuantity, totalAmount, paidAmount, isPaid, customerId, grandTotal } = req.body;
         const shopId = req.user.shopId
         const createdBy = req.user.userId
@@ -17,7 +17,7 @@ export const registerMainBill = async (req, res, next) => {
         DB.query(registerMainBillQuery, (error, result) => {
             if (error) return next(error);
             if (result[0].length) {
-                return ResponseHandler.success(res, "Bill added successfully!", 200, result);
+                return ResponseHandler.success(res, "Bill added successfully!", 200, result[0][0]);
             }
         });
     } catch (error) {

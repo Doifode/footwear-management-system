@@ -7,6 +7,7 @@ export interface IRegisterProduct {
     mrp: number;
     actualPrice: number;
     discount: number;
+    offeredDiscount: number;
     size: number;
     shopId: number;
     createdBy?: number;
@@ -19,7 +20,7 @@ export interface IRegisterProduct {
     articleName?: string;
     colorName?: string;
     sellingPrice: number,
-    finalPrice?:number
+    finalPrice?: number
 };
 
 

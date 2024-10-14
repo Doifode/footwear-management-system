@@ -1,14 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
-import RootReducer from "./RootReducer";
-import { AuthApis } from "./api/AuthApi";
 import persistStore from "redux-persist/es/persistStore";
+import RootReducer from "./RootReducer";
+import { ArticleApi } from "./api/ArticleApi";
+import { AuthApis } from "./api/AuthApi";
+import { BrandApi } from "./api/BrandApi";
+import { CategoryApi } from "./api/CategoryApi";
+import { ColorApi } from "./api/ColorApi";
+import { CustomerApi } from "./api/CustomerApi";
+import { ProductApi } from "./api/ProductApi";
 import { ShopApi } from "./api/ShopApi";
 import { UserApi } from "./api/UserApi";
-import { CategoryApi } from "./api/CategoryApi";
-import { BrandApi } from "./api/BrandApi";
-import { ArticleApi } from "./api/ArticleApi";
-import { ProductApi } from "./api/ProductApi";
-import { ColorApi } from "./api/ColorApi";
+import { PaymentTypeApi } from "./api/PaymentTypeApi";
+import { BillApi } from "./api/GenerateBillAPi";
+import { MainBillApi } from "./api/MainBillApi";
 
 export const store = configureStore({
     reducer: RootReducer,
@@ -23,6 +27,10 @@ export const store = configureStore({
                 ArticleApi.middleware,
                 ColorApi.middleware,
                 ProductApi.middleware,
+                CustomerApi.middleware,
+                PaymentTypeApi.middleware,
+                MainBillApi.middleware,
+                BillApi.middleware,
             )
 });;
 

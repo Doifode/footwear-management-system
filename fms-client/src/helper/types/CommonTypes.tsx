@@ -1,3 +1,5 @@
+import { IRegisterProduct } from "./Product";
+
 export interface apiResponse<T> {
     data: T,
     message: string,
@@ -46,9 +48,18 @@ interface IApi {
     subscriptions: Record<string, unknown>;
     config: IApiConfig;
 }
-
+interface IBillProduct {
+    activeBillProduct: IRegisterProduct[],
+    totalValues: {
+        itemsValue: number,
+        payableAmount: number,
+        total: number,
+        discount: number
+    }
+}
 export interface IRootState {
     Auth: IAuth;
     Theme: ITheme;
     api: IApi;
+    Bill: IBillProduct;
 }
