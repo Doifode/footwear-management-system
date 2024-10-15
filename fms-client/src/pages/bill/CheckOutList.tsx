@@ -33,8 +33,6 @@ const BillCheckOut: React.FC<BillCheckOutProps> = ({ generateBill }) => {
         },
     });
 
-
-    console.log(formik.errors, "formik.errors")
     return (
         <form onSubmit={formik.handleSubmit}>
             <Grid2 spacing={5} container padding={1} border={2} borderRadius={2} bottom={0} position={"absolute"} width={"1135px"} >

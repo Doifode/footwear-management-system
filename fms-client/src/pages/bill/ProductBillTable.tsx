@@ -38,7 +38,6 @@ export default function ProductTable() {
     const handleRemoveProduct = (index: number) => {
         setProductListArray(productListArray.filter((_, i) => i != index));
         dispatch(setActiveBillProduct({ productList: productListArray.filter((_, i) => i != index), totalValues: {} }));
-
     }
 
     return (<>

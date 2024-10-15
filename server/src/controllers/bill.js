@@ -18,3 +18,20 @@ export const registerBill = async (req, res, next) => {
         return next(error);
     }
 };
+
+export const getAllBillsByMainBill = async (req, res, next) => {
+    try {
+        const mainBillId = req.params.id
+        const getBillByMainBillQuery = `CALL GET_BILLS_BY_MAIN_BILL_ID(${mainBillId})`;
+
+        DB.query(getBillByMainBillQuery, (error, result) => {
+            if (error) return next(error);
+            if (result[0].length)
+                return ResponseHandler.success(res, "", 200, result[0]);
+            else
+                return ResponseHandler.success(res, "", 200, []);
+        });
+    } catch (error) {
+        return next(error);
+    }
+};

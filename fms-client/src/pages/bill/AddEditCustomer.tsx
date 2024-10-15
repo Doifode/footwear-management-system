@@ -42,6 +42,7 @@ const AddEditCustomer: React.FC<AddEditCustomerProps> = ({ setCustomerDialogOpen
             if (data?.success) {
                 toast.success(data.message);
                 setCustomerDialogOpen(false);
+                setCustomerDetails(data?.data)
             } else {
                 toast.error(data?.message);
             }

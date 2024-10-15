@@ -25,7 +25,8 @@ const initialProductValues: IRegisterProduct = {
     size: 5,
     shopId: 0,
     colorId: 0,
-    sellingPrice: 0
+    sellingPrice: 0,
+    offeredDiscount: 0
 };
 
 const validationSchema = Yup.object({

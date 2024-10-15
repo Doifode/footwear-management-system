@@ -35,6 +35,7 @@ export interface IMainBill {
     "customerId": number,
     mainBillId: number
 }
+
 export interface ICheckOut {
     paymentTypeId: number;
     isPaid: number,

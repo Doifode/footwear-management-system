@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { apiResponse, IRootState } from "../../helper/types/CommonTypes";
 import { IMainBill } from "../../helper/types/PaymentTypes";
+import { IMainBillList } from "../../helper/types/Bill";
 
 export const MainBillApi = createApi({
 
@@ -18,7 +19,7 @@ export const MainBillApi = createApi({
     }),
 
     endpoints: (builder) => ({
-        getAllMainBills: builder.query<apiResponse<IMainBill[]>, null>({
+        getAllMainBills: builder.query<apiResponse<IMainBillList[]>, null>({
             query: () => `/`,
             providesTags: ["getAllMainBills"],
         }),

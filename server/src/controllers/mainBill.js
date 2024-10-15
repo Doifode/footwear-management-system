@@ -1,4 +1,4 @@
-import DB from "../dbConnection.js"
+import DB from "../dbConnection.js";
 import ResponseHandler from "../utils/ResponseHandler.js";
 import { registerMainBillValidator } from "../validators/mainBill.js";
 
@@ -6,12 +6,12 @@ export const registerMainBill = async (req, res, next) => {
     try {
         const error = registerMainBillValidator.safeParse(req.body);
         if (!error.success) {
-            return ResponseHandler.error(res, error.error.issues[0].message, 400)
+            return ResponseHandler.error(res, error.error.issues[0].message, 400);
         };
 
         const { itemQuantity, totalAmount, paidAmount, isPaid, customerId, grandTotal } = req.body;
-        const shopId = req.user.shopId
-        const createdBy = req.user.userId
+        const shopId = req.user.shopId;
+        const createdBy = req.user.userId;
 
         const registerMainBillQuery = `CALL REGISTER_MAIN_BILL('${itemQuantity}','${totalAmount}','${paidAmount}','${isPaid}','${createdBy}','${customerId}','${shopId}','${grandTotal}')`;
         DB.query(registerMainBillQuery, (error, result) => {
@@ -21,6 +21,23 @@ export const registerMainBill = async (req, res, next) => {
             }
         });
     } catch (error) {
-        return next(error)
+        return next(error);
     }
 };
+
+export const getAllMainBills = (req, res, next) => {
+    try {
+        const shopId = req.user.shopId
+        const getAllMainBillsQuery = `CALL GET_MAIN_BILLS('${shopId}')`;
+        DB.query(getAllMainBillsQuery, (error, result) => {
+            if (error) return next(error);
+            if (result[0].length) {
+                return ResponseHandler.success(res, "", 200, result[0]);
+            } else {
+                return ResponseHandler.success(res, "", 200, []);
+            }
+        });
+    } catch (error) {
+        return next(error);
+    }
+}

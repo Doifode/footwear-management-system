@@ -16,7 +16,7 @@ export const registerCustomer = async (req, res, next) => {
         DB.query(registerCustomerQuery, (error, result) => {
             if (error) return next(error);
             if (result[0]?.length) {
-                return ResponseHandler.success(res, "Customer added successfully!", 200, result);
+                return ResponseHandler.success(res, "Customer added successfully!", 200, result[0][0]);
             } else {
                 return ResponseHandler.error(res, "Something went wrong.", 200, result);
             }

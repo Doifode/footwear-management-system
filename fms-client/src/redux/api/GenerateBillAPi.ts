@@ -5,7 +5,7 @@ import { IBill } from "../../helper/types/PaymentTypes";
 export const BillApi = createApi({
 
     reducerPath: "BillApi",
-    tagTypes: ["getAllBills"],
+    tagTypes: ["getAllBillsByMainBill"],
 
     baseQuery: fetchBaseQuery({
         baseUrl: "http://localhost:2304/api/Bill/",
@@ -18,18 +18,18 @@ export const BillApi = createApi({
     }),
 
     endpoints: (builder) => ({
-        getAllBills: builder.query<apiResponse<IBill[]>, null>({
-            query: () => `/`,
-            providesTags: ["getAllBills"],
+        getAllBillsByMainBill: builder.query<apiResponse<IBill[]>, number>({
+            query: (id: number) => `/${id}`,
+            providesTags: ["getAllBillsByMainBill"],
         }),
         addBill: builder.mutation<apiResponse<[]>, IBill>({
             query: (body: IBill) => ({ url: `/`, method: "POST", body }),
-            invalidatesTags: ["getAllBills"],
+            invalidatesTags: ["getAllBillsByMainBill"],
         })
     })
 });
 export const {
-    useGetAllBillsQuery,
-    useLazyGetAllBillsQuery,
+    useGetAllBillsByMainBillQuery,
+    useLazyGetAllBillsByMainBillQuery,
     useAddBillMutation
 } = BillApi;

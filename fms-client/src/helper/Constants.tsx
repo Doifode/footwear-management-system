@@ -1,5 +1,7 @@
 import Billing from "../pages/bill/Billing"
 import FinalBill from "../pages/bill/FinalBill"
+import BillTable from "../pages/billHistory/BillTable"
+import MainBillTable from "../pages/billHistory/MainBillTable"
 import ItemTabs from "../pages/components/items/ItemTabs"
 import AddEditProduct from "../pages/components/products/AddEditProduct"
 import ProductTable from "../pages/components/products/ProductTable"
@@ -37,12 +39,17 @@ export const routes = [
             {
                 label: "Product List",
                 path: "/product-list",
-                roleAccessArray: [2]
+                roleAccessArray: [2, 3]
             },
             {
                 label: "Bill",
                 path: "/bill",
-                roleAccessArray: [2]
+                roleAccessArray: [2, 3]
+            },
+            {
+                label: "Bill History",
+                path: "/bill-history",
+                roleAccessArray: [2, 3]
             }
 
         ]
@@ -89,26 +96,36 @@ export const allRoutesList = [
     {
         routeName: "/product-list",
         component: <ProductTable />,
-        accessArray: [2]
+        accessArray: [2, 3]
     },
     {
         routeName: "/add-product",
         component: <AddEditProduct />,
-        accessArray: [2]
+        accessArray: [2, 3]
     },
     {
         routeName: "/update-product",
         component: <AddEditProduct />,
-        accessArray: [2]
+        accessArray: [2, 3]
     },
     {
         routeName: "/bill",
         component: <Billing />,
-        accessArray: [2]
+        accessArray: [2, 3]
     },
     {
         routeName: "/payment",
         component: <FinalBill />,
-        accessArray: [2]
+        accessArray: [2, 3]
+    },
+    {
+        routeName: "/bill-history",
+        component: <MainBillTable />,
+        accessArray: [2, 3]
+    },
+    {
+        routeName: "/bills-history",
+        component: <BillTable />,
+        accessArray: [2, 3]
     }
 ]

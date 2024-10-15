@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { apiResponse, IRootState } from "../../helper/types/CommonTypes";
-import { IGetProduct, IGetProductBilling, IGetSizes, IRegisterProduct, ISizeType } from "../../helper/types/Product";
+import { IGetProduct, IGetSizes, IRegisterProduct, ISizeType } from "../../helper/types/Product";
 
 export const ProductApi = createApi({
 
