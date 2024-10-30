@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `fms` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `fms`;
 -- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
 -- Host: localhost    Database: fms
@@ -48,13 +50,13 @@ INSERT INTO `articles` VALUES (1,'BAI09',2,11,29,29,'2024-09-26 16:49:09','2024-
 UNLOCK TABLES;
 
 --
--- Table structure for table `biill`
+-- Table structure for table `bill`
 --
 
-DROP TABLE IF EXISTS `biill`;
+DROP TABLE IF EXISTS `bill`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `biill` (
+CREATE TABLE `bill` (
   `billId` int NOT NULL AUTO_INCREMENT,
   `productId` int NOT NULL,
   `categoryName` varchar(45) NOT NULL,
@@ -64,44 +66,44 @@ CREATE TABLE `biill` (
   `size` int NOT NULL,
   `sellingPrice` int NOT NULL,
   `mrp` int NOT NULL,
-  `preDiscount` int NOT NULL,
+  `discount` int NOT NULL,
   `offeredDiscount` int NOT NULL,
   `finalPrice` int NOT NULL,
   `sellerId` int NOT NULL,
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `createdBy` int NOT NULL,
   `updatedBy` int NOT NULL,
-  `status` int NOT NULL,
-  `paymentMode` int NOT NULL,
+  `statusId` int NOT NULL,
+  `paymentModeId` int NOT NULL,
   `isPaid` tinyint NOT NULL,
   `paidAmount` int NOT NULL,
   `remainingAmount` int NOT NULL,
-  `parentBillId` int NOT NULL,
+  `mainBillId` int NOT NULL,
+  `actualPrice` int NOT NULL,
+  `productName` varchar(100) NOT NULL,
   PRIMARY KEY (`billId`),
   UNIQUE KEY `billId_UNIQUE` (`billId`),
-  KEY `parentbill_id_fk_idx` (`parentBillId`),
-  KEY `status_id_fk_idx` (`status`),
-  KEY `paymentType_id_fk_idx` (`paymentMode`),
+  KEY `parentbill_id_fk_idx` (`mainBillId`),
+  KEY `status_id_fk_idx` (`statusId`),
+  KEY `paymentType_id_fk_idx` (`paymentModeId`),
   KEY `seller_id_Fk_idx` (`sellerId`),
   KEY `updatedby_id_fk_idx` (`updatedBy`),
-  KEY `created_by_id_fk_idx` (`createdBy`),
-  CONSTRAINT `created_by_id_fk` FOREIGN KEY (`createdBy`) REFERENCES `user` (`userId`),
-  CONSTRAINT `parentbill_id_fk` FOREIGN KEY (`parentBillId`) REFERENCES `mainbill` (`mainBillId`),
-  CONSTRAINT `paymentType_id_fk` FOREIGN KEY (`paymentMode`) REFERENCES `paymenttypes` (`paymentTypeId`),
+  CONSTRAINT `parentbill_id_fk` FOREIGN KEY (`mainBillId`) REFERENCES `mainbill` (`mainBillId`),
+  CONSTRAINT `paymentType_id_fk` FOREIGN KEY (`paymentModeId`) REFERENCES `paymenttypes` (`paymentTypeId`),
   CONSTRAINT `seller_id_Fk` FOREIGN KEY (`sellerId`) REFERENCES `user` (`userId`),
-  CONSTRAINT `status_id_fk` FOREIGN KEY (`status`) REFERENCES `billstatus` (`billStatusId`),
+  CONSTRAINT `status_id_fk` FOREIGN KEY (`statusId`) REFERENCES `billstatus` (`billStatusId`),
   CONSTRAINT `updatedby_id_fk` FOREIGN KEY (`updatedBy`) REFERENCES `user` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `biill`
+-- Dumping data for table `bill`
 --
 
-LOCK TABLES `biill` WRITE;
-/*!40000 ALTER TABLE `biill` DISABLE KEYS */;
-/*!40000 ALTER TABLE `biill` ENABLE KEYS */;
+LOCK TABLES `bill` WRITE;
+/*!40000 ALTER TABLE `bill` DISABLE KEYS */;
+INSERT INTO `bill` VALUES (1,109,'Ladies','Princess','Paragoan','Black',6,140,140,0,7,130,29,'2024-10-14 15:08:34','2024-10-14 15:08:34',29,1,5,1,130,0,19,105,'Paragoan Princess'),(2,109,'Ladies','Princess','Paragoan','Black',6,140,140,0,7,130,29,'2024-10-14 15:08:56','2024-10-14 15:08:56',29,1,5,1,130,0,20,105,'Paragoan Princess'),(3,109,'Ladies','Princess','Paragoan','Black',6,140,140,0,7,130,29,'2024-10-14 15:09:35','2024-10-14 15:09:35',29,1,5,1,130,0,21,105,'Paragoan Princess'),(4,109,'Ladies','Princess','Paragoan','Black',6,140,140,0,7,130,29,'2024-10-14 15:14:30','2024-10-14 15:14:30',29,1,5,1,130,0,22,105,'Paragoan Princess'),(5,101,'Girls','SPX-1025','Sparx','Red',6,190,200,5,5,190,29,'2024-10-14 15:23:49','2024-10-14 15:23:49',29,1,5,1,190,0,23,150,'Test 8'),(6,109,'Ladies','Princess','Paragoan','Black',6,140,140,0,14,120,29,'2024-10-14 20:56:00','2024-10-14 20:56:00',29,1,5,1,120,0,24,105,'Paragoan Princess'),(7,108,'Farm','887','Madan','Black',8,323,340,5,5,323,29,'2024-10-15 10:59:41','2024-10-15 10:59:41',29,1,5,1,646,0,25,210,'Madan 887'),(8,105,'Farm','887','Madan','Black',6,323,340,5,5,323,29,'2024-10-15 10:59:41','2024-10-15 10:59:41',29,1,5,1,646,0,25,210,'Madan 887'),(9,121,'Gents','887','Madan','Orange',8,1140,1200,5,12,1000,29,'2024-10-29 12:12:40','2024-10-29 12:12:40',29,1,5,1,1000,0,26,800,'Kurundwadi Paytan ');
+/*!40000 ALTER TABLE `bill` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -249,13 +251,20 @@ CREATE TABLE `customers` (
   `firstName` varchar(100) NOT NULL,
   `lastName` varchar(100) NOT NULL,
   `mobileNo` char(10) NOT NULL,
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `createdBy` int NOT NULL,
   `updatedBy` int NOT NULL,
+  `shopId` int NOT NULL,
   PRIMARY KEY (`customerId`),
-  UNIQUE KEY `customerId_UNIQUE` (`customerId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `customerId_UNIQUE` (`customerId`),
+  KEY `shop_id_fk_idx` (`shopId`),
+  KEY `updated_by_fk_idx` (`updatedBy`),
+  KEY `created_by_fk_idx` (`createdBy`),
+  CONSTRAINT `created_by_fk_` FOREIGN KEY (`createdBy`) REFERENCES `user` (`userId`),
+  CONSTRAINT `shop_id_fk_1` FOREIGN KEY (`shopId`) REFERENCES `shops` (`shopId`),
+  CONSTRAINT `updated_by_fk` FOREIGN KEY (`updatedBy`) REFERENCES `user` (`userId`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -264,6 +273,7 @@ CREATE TABLE `customers` (
 
 LOCK TABLES `customers` WRITE;
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
+INSERT INTO `customers` VALUES (8,'Yash','Doifode C','8080494027','2024-10-10 14:52:16','2024-10-10 14:52:16',29,29,11),(9,'Rushikesh','Sid','9022969001','2024-10-14 10:50:53','2024-10-14 10:50:53',29,29,11),(10,'Rushikesh','Sid','9022969008','2024-10-14 10:53:38','2024-10-14 10:53:38',29,29,11),(11,'Akash','Sid','7896857452','2024-10-14 20:51:28','2024-10-14 20:51:28',29,29,11),(12,'Akash','Sid','9887546554','2024-10-14 20:53:55','2024-10-14 20:53:55',29,29,11),(13,'Om ','Doifode','8774859685','2024-10-14 20:55:12','2024-10-14 20:55:12',29,29,11),(14,'Mahesh','Jadhav','9876549879','2024-10-14 20:55:49','2024-10-14 20:55:49',29,29,11),(15,'Sanket ','Kurne','8767360587','2024-10-29 12:12:21','2024-10-29 12:12:21',29,29,11);
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -285,11 +295,15 @@ CREATE TABLE `mainbill` (
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `customerId` int NOT NULL,
+  `shopId` int NOT NULL,
+  `grandTotal` int NOT NULL,
   PRIMARY KEY (`mainBillId`),
   UNIQUE KEY `mainBillId_UNIQUE` (`mainBillId`),
   KEY `customer_id_fk_idx` (`customerId`),
-  CONSTRAINT `customer_id_fk` FOREIGN KEY (`customerId`) REFERENCES `customers` (`customerId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='	';
+  KEY `shop_id_fk_idx` (`shopId`),
+  CONSTRAINT `customer_id_fk` FOREIGN KEY (`customerId`) REFERENCES `customers` (`customerId`),
+  CONSTRAINT `shop_id_fk_id` FOREIGN KEY (`shopId`) REFERENCES `shops` (`shopId`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='	';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -298,6 +312,7 @@ CREATE TABLE `mainbill` (
 
 LOCK TABLES `mainbill` WRITE;
 /*!40000 ALTER TABLE `mainbill` DISABLE KEYS */;
+INSERT INTO `mainbill` VALUES (2,5,450,450,1,29,29,'2024-10-10 17:26:34','2024-10-10 17:26:34',8,11,510),(18,1,140,130,1,29,29,'2024-10-14 15:06:35','2024-10-14 15:06:35',9,11,140),(19,1,140,130,1,29,29,'2024-10-14 15:08:34','2024-10-14 15:08:34',9,11,140),(20,1,140,130,1,29,29,'2024-10-14 15:08:56','2024-10-14 15:08:56',9,11,140),(21,1,140,130,1,29,29,'2024-10-14 15:09:35','2024-10-14 15:09:35',9,11,140),(22,1,140,130,1,29,29,'2024-10-14 15:14:30','2024-10-14 15:14:30',8,11,140),(23,1,190,190,1,29,29,'2024-10-14 15:23:49','2024-10-14 15:23:49',8,11,190),(24,1,140,120,1,29,29,'2024-10-14 20:56:00','2024-10-14 20:56:00',14,11,140),(25,2,646,646,1,29,29,'2024-10-15 10:59:41','2024-10-15 10:59:41',11,11,646),(26,1,1140,1000,1,29,29,'2024-10-29 12:12:40','2024-10-29 12:12:40',15,11,1140);
 /*!40000 ALTER TABLE `mainbill` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -322,7 +337,7 @@ CREATE TABLE `paymenttypes` (
 
 LOCK TABLES `paymenttypes` WRITE;
 /*!40000 ALTER TABLE `paymenttypes` DISABLE KEYS */;
-INSERT INTO `paymenttypes` VALUES (1,'Credit Card','1'),(2,'Debit Card','1'),(3,'PayPal','1'),(4,'Net Banking','1'),(5,'Cash on Delivery','1'),(6,'UPI','1'),(7,'Wallet','1'),(8,'Bank Transfer','1'),(9,'Cryptocurrency','0');
+INSERT INTO `paymenttypes` VALUES (1,'Credit Card','1'),(2,'Debit Card','1'),(4,'Net Banking','1'),(5,'Cash','1'),(6,'UPI','1'),(8,'Bank Transfer','1');
 /*!40000 ALTER TABLE `paymenttypes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -358,7 +373,7 @@ CREATE TABLE `products` (
   CONSTRAINT `article_id_fk` FOREIGN KEY (`articleId`) REFERENCES `articles` (`articleId`),
   CONSTRAINT `color_id_fk` FOREIGN KEY (`colorId`) REFERENCES `colors` (`colorId`),
   CONSTRAINT `shop_id_fk` FOREIGN KEY (`shopId`) REFERENCES `shops` (`shopId`)
-) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -367,7 +382,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (101,'Test 8',4,7,2,200,150,5,6,11,29,29,'2024-10-03 12:13:20','2024-10-03 15:04:07',1,190),(103,'Bairathi',1,5,8,522,160,10,6,11,29,29,'2024-10-03 14:59:40','2024-10-03 14:59:40',2,470),(104,'Madan 887',5,10,1,340,210,5,5,11,29,29,'2024-10-08 15:37:16','2024-10-08 15:37:16',3,323),(105,'Madan 887',5,10,2,340,210,5,6,11,29,29,'2024-10-08 15:37:16','2024-10-08 15:37:16',3,323),(106,'Madan 887',5,10,3,340,210,5,7,11,29,29,'2024-10-08 15:37:16','2024-10-08 15:37:16',3,323),(107,'Madan 887',5,10,4,340,210,5,10,11,29,29,'2024-10-08 15:37:16','2024-10-08 15:37:16',3,323),(108,'Madan 887',5,10,4,340,210,5,8,11,29,29,'2024-10-08 15:37:16','2024-10-08 15:37:16',3,323),(109,'Paragoan Princess',2,1,1,140,105,0,6,11,29,29,'2024-10-08 15:38:14','2024-10-08 15:38:14',3,140),(110,'Paragoan Princess',2,1,1,140,105,0,5,11,29,29,'2024-10-08 15:38:14','2024-10-08 15:38:14',3,140),(111,'Paragoan Princess',2,1,1,140,105,0,7,11,29,29,'2024-10-08 15:38:14','2024-10-08 15:38:14',3,140),(112,'Paragon',2,1,1,140,105,0,8,11,29,29,'2024-10-08 15:39:56','2024-10-08 15:39:56',3,140),(113,'Paragoan Slipper',7,5,3,150,110,0,5,11,29,29,'2024-10-08 16:02:01','2024-10-08 17:27:23',4,150),(114,'Paragoan Slipper',7,5,5,150,110,0,10,11,29,29,'2024-10-08 16:02:01','2024-10-08 17:27:23',4,150),(115,'Paragoan Slipper',7,5,1,150,110,0,8,11,29,29,'2024-10-08 16:02:01','2024-10-08 17:27:23',4,150),(116,'Paragoan Slipper',7,5,1,150,110,0,6,11,29,29,'2024-10-08 16:02:01','2024-10-08 17:27:23',4,150),(117,'Paragoan Slipper',7,5,1,150,110,0,9,11,29,29,'2024-10-08 16:02:01','2024-10-08 17:27:23',4,150),(118,'Paragoan Slipper',7,5,1,150,110,0,4,11,29,29,'2024-10-08 16:02:01','2024-10-08 17:27:23',4,150);
+INSERT INTO `products` VALUES (101,'Test 8',4,7,1,200,150,5,6,11,29,29,'2024-10-03 12:13:20','2024-10-03 15:04:07',1,190),(103,'Bairathi',1,5,8,522,160,10,6,11,29,29,'2024-10-03 14:59:40','2024-10-03 14:59:40',2,470),(104,'Madan 887',5,10,1,340,210,5,5,11,29,29,'2024-10-08 15:37:16','2024-10-08 15:37:16',3,323),(105,'Madan 887',5,10,1,340,210,5,6,11,29,29,'2024-10-08 15:37:16','2024-10-08 15:37:16',3,323),(106,'Madan 887',5,10,3,340,210,5,7,11,29,29,'2024-10-08 15:37:16','2024-10-08 15:37:16',3,323),(107,'Madan 887',5,10,4,340,210,5,10,11,29,29,'2024-10-08 15:37:16','2024-10-08 15:37:16',3,323),(108,'Madan 887',5,10,3,340,210,5,8,11,29,29,'2024-10-08 15:37:16','2024-10-08 15:37:16',3,323),(109,'Paragoan Princess',2,1,0,140,105,0,6,11,29,29,'2024-10-08 15:38:14','2024-10-08 15:38:14',3,140),(110,'Paragoan Princess',2,1,1,140,105,0,5,11,29,29,'2024-10-08 15:38:14','2024-10-08 15:38:14',3,140),(111,'Paragoan Princess',2,1,1,140,105,0,7,11,29,29,'2024-10-08 15:38:14','2024-10-08 15:38:14',3,140),(112,'Paragon',2,1,1,140,105,0,8,11,29,29,'2024-10-08 15:39:56','2024-10-08 15:39:56',3,140),(113,'Paragoan Slipper',7,5,3,150,110,0,5,11,29,29,'2024-10-08 16:02:01','2024-10-08 17:27:23',4,150),(114,'Paragoan Slipper',7,5,5,150,110,0,10,11,29,29,'2024-10-08 16:02:01','2024-10-08 17:27:23',4,150),(115,'Paragoan Slipper',7,5,1,150,110,0,8,11,29,29,'2024-10-08 16:02:01','2024-10-08 17:27:23',4,150),(116,'Paragoan Slipper',7,5,1,150,110,0,6,11,29,29,'2024-10-08 16:02:01','2024-10-08 17:27:23',4,150),(117,'Paragoan Slipper',7,5,1,150,110,0,9,11,29,29,'2024-10-08 16:02:01','2024-10-08 17:27:23',4,150),(118,'Paragoan Slipper',7,5,1,150,110,0,4,11,29,29,'2024-10-08 16:02:01','2024-10-08 17:27:23',4,150),(119,'Kurundwadi Paytan ',5,5,2,1200,800,5,10,11,29,29,'2024-10-29 12:10:33','2024-10-29 12:10:33',2,1140),(120,'Kurundwadi Paytan ',5,5,1,1200,800,5,5,11,29,29,'2024-10-29 12:10:33','2024-10-29 12:10:33',2,1140),(121,'Kurundwadi Paytan ',5,5,0,1200,800,5,8,11,29,29,'2024-10-29 12:10:33','2024-10-29 12:10:33',2,1140);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -709,6 +724,41 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `GET_ALL_CUSTOMERS` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GET_ALL_CUSTOMERS`(IN SHOP_ID INT)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        -- Handle any SQL exception
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'An error occurred while fetching customers.';
+    END;
+
+    DECLARE EXIT HANDLER FOR NOT FOUND
+    BEGIN
+        -- Handle case where no rows are found
+        SIGNAL SQLSTATE '02000' SET MESSAGE_TEXT = 'No customers found for the specified shop.';
+    END;
+
+    -- Main query to fetch all customers for the given shop
+    SELECT * 
+    FROM CUSTOMERS 
+    WHERE SHOPID = SHOP_ID;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `GET_ALL_PRODUCTS` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -747,6 +797,44 @@ BEGIN
             PR.SHOPID = SHOP_ID LIMIT 50;
     END IF;
     
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `GET_BILLS_BY_MAIN_BILL_ID` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GET_BILLS_BY_MAIN_BILL_ID`(IN MAIN_BILL_ID INT)
+BEGIN
+SELECT * FROM BILL WHERE MAINBILLID = MAIN_BILL_ID;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `GET_MAIN_BILLS` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GET_MAIN_BILLS`(IN SHOP_ID INT)
+BEGIN
+SELECT MN.*, CM.firstName,CM.lastName,CM.mobileNo  FROM MAINBILL MN JOIN CUSTOMERS CM ON MN.CUSTOMERID =CM.CUSTOMERID WHERE MN.SHOPID = SHOP_ID; 
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1114,6 +1202,111 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `REGISTER_BILL` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `REGISTER_BILL`(
+    IN PRODUCT_ID INT,
+    IN SIZE_VAL INT,
+    IN SELLING_PRICE INT,
+    IN MRP_VAL INT,
+    IN DISC INT,
+    IN OFFERED_DISC INT,
+    IN FINAL_PRICE INT,
+    IN CREATED_BY INT,
+    IN IS_PAID TINYINT,
+    IN PAID_AMT INT,
+    IN ACTUAL_PRICE INT,
+    IN REMAINING_AMT INT,
+    IN CATEGORY_NAME VARCHAR(45),
+    IN ARTICLE_NAME VARCHAR(45),
+    IN BRAND_NAME VARCHAR(45),
+    IN COLOR_NAME VARCHAR(45),
+    IN PRODUCT_NAME VARCHAR(100),
+    IN PAYMENT_MODE INT,  -- Payment mode argument added
+    IN STATUS INT,        -- Payment status argument added
+    IN MAIN_BILL_ID INT   -- Main bill ID argument added
+)
+BEGIN
+    -- Check if the product exists in the PRODUCTS table
+    IF (SELECT COUNT(*) FROM PRODUCTS WHERE productId = PRODUCT_ID) = 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Product not found.';
+    END IF;
+
+    -- Check if the actual price is less than the final price (indicating loss)
+    IF ACTUAL_PRICE > FINAL_PRICE THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Product you are selling in loss.';
+    END IF;
+    
+    update  products set quantity = quantity-1 where productid =PRODUCT_ID;
+
+    -- Insert the bill details into the BILL table
+    INSERT INTO BILL (
+        productId, 
+        size, 
+        sellingPrice, 
+        mrp, 
+        discount, 
+        offeredDiscount, 
+        finalPrice, 
+        createdAt, 
+        updatedAt, 
+         updatedBy, 
+        statusid, 
+        paymentModeid, 
+        isPaid, 
+        paidAmount, 
+        remainingAmount, 
+        mainBillId,     -- mainBillId is now passed as a parameter
+        actualPrice, 
+        productName, 
+        categoryName, 
+        articleName, 
+        brandName, 
+        colorName, 
+        sellerId
+    ) 
+    VALUES (
+        PRODUCT_ID, 
+        SIZE_VAL, 
+        SELLING_PRICE, 
+        MRP_VAL, 
+        DISC, 
+        OFFERED_DISC, 
+        FINAL_PRICE, 
+        CURRENT_TIMESTAMP, 
+        CURRENT_TIMESTAMP, 
+         CREATED_BY,   
+        STATUS,       
+        PAYMENT_MODE,  
+        IS_PAID, 
+        PAID_AMT, 
+        REMAINING_AMT, 
+        MAIN_BILL_ID,   
+        ACTUAL_PRICE, 
+        PRODUCT_NAME, 
+        CATEGORY_NAME, 
+        ARTICLE_NAME, 
+        BRAND_NAME, 
+        COLOR_NAME, 
+        CREATED_BY   
+    );
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `REGISTER_BRAND` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1209,6 +1402,115 @@ COLOR_CODE,
 CREATED_BY,
 CREATED_BY,
 SHOP_ID);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `REGISTER_CUSTOMER` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `REGISTER_CUSTOMER`(
+IN FIRST_NAME VARCHAR(45),
+IN LAST_NAME VARCHAR(45),
+IN MOBILE_NO CHAR(10),
+ IN SHOP_ID INT,
+ IN CREATED_BY INT
+)
+BEGIN
+
+IF (SELECT COUNT(*) FROM SHOPS WHERE SHOPID = SHOP_ID) = 0 
+THEN 
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT ='Shop does not exists.';
+END IF;
+
+IF (SELECT COUNT(*) FROM USER WHERE USERID = CREATED_BY AND SHOPID = SHOP_ID) = 0 
+THEN 
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT ='User not found.';
+END IF;
+
+IF(SELECT COUNT(*) FROM CUSTOMERS WHERE SHOPID = SHOP_ID AND MOBILENO = MOBILE_NO AND FIRSTNAME = FIRST_NAME AND LASTNAME= LAST_NAME) > 0
+THEN 
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Customer already exists.';
+END IF;
+
+IF(SELECT COUNT(*) FROM CUSTOMERS WHERE MOBILENO = MOBILE_NO AND SHOPID = SHOP_ID) > 0 
+THEN 
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT ='Mobile No. already exists.';
+END IF;
+
+INSERT INTO CUSTOMERS (FIRSTNAME,LASTNAME,MOBILENO,SHOPID,CREATEDBY,UPDATEDBY) VALUES(FIRST_NAME,LAST_NAME,MOBILE_NO,SHOP_ID,CREATED_BY,CREATED_BY) ;
+    SELECT * FROM CUSTOMERS WHERE CUSTOMERID = LAST_INSERT_ID();
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `REGISTER_MAIN_BILL` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `REGISTER_MAIN_BILL`(
+    IN QUANTITY INT, 
+    IN TOTAL INT,
+    IN PAID_AMT INT,
+    IN IS_PAID TINYINT,
+    IN CREATED_BY INT,
+    IN CUSTOMER_ID INT,
+    IN SHOP_ID INT,
+    IN GRAND_TOTAL INT
+    
+)
+BEGIN
+
+    -- Check if the customer exists in the specified shop
+    IF (SELECT COUNT(*) FROM CUSTOMERS WHERE CUSTOMERID = CUSTOMER_ID AND SHOPID = SHOP_ID) = 0 
+    THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Customer not found in this shop.';
+    END IF;
+
+    -- Insert the bill record if all validations pass
+    INSERT INTO MAINBILL 
+    (
+        ITEMQUANTITY,
+        TOTALAMOUNT,
+        PAIDAMOUNT,
+        ISPAID,
+        BILLBY,
+        UPDATEDBY,
+        CUSTOMERID,
+        SHOPID,
+        GRANDTOTAL
+    ) 
+    VALUES 
+    (
+        QUANTITY, 
+        TOTAL, 
+        PAID_AMT, 
+        IS_PAID, 
+        CREATED_BY, 
+        CREATED_BY, 
+        CUSTOMER_ID, 
+        SHOP_ID,
+        GRAND_TOTAL
+    );
+    SELECT * FROM MAINBILL WHERE MAINBILLID = last_insert_id();
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1879,4 +2181,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-10 12:26:34
+-- Dump completed on 2024-10-30 15:57:53
